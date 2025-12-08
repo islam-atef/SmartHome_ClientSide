@@ -1,0 +1,37 @@
+<mat-card id="info-card">
+  <mat-card-header>
+    <h1 class="info-title">{{element || 'Register Form'}} : </h1>
+  </mat-card-header>
+  <mat-card-content>
+    @if(element == 'Terms and Conditions'){
+    <div class="terms-card ">
+      <p class="terms-intro">
+        By checking this box, you agree to our terms and conditions.
+        Please read and understand them before proceeding with your registration.
+      </p>
+
+      <ul class="terms-list">
+        <li>We will never share your information with third parties without your consent.</li>
+        <li>We use your information to provide you with the services you have requested.</li>
+        <li>We collect certain personal information to create and manage your account.</li>
+        <li>We will not sell, rent, or lease your information to third parties.</li>
+        <li>We may use your location data to provide location-based services.</li>
+        <li>We use browser identifiers to enhance your experience on our platform.</li>
+      </ul>
+      <p class="terms-footer">
+        Your privacy is important to us, and we are committed to protecting your personal information.
+      </p>
+    </div>
+    }
+    @else if (element == 'Password') {
+    <p> {{contentMap[element]}} </p>
+    <a class="btn btn-primary generatePw-btn" (click)="generateRandomPassword()"> Generate strong password </a>
+    <label class="generatePw-label">{{password}}</label>
+    }
+    @else {<p>
+      <!-- Info messages based on the focused field -->
+      {{contentMap[element] || 'Please fill out the form to register.'}}
+    </p>}
+
+  </mat-card-content>
+</mat-card>

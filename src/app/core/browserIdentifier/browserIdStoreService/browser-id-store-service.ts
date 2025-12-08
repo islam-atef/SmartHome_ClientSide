@@ -5,20 +5,31 @@ import { BrowserIdentifierModel } from '../browser-Identifier-Model';
   providedIn: 'root',
 })
 export class BrowserIdStoreService {
-  private readonly KEY = 'device_id_v1';
+  private readonly KEY = 'browser_id_v1';
 
   // -----------------------------
   // GET device id
   // -----------------------------
   getBrowserId(): BrowserIdentifierModel | null {
     const json = localStorage.getItem(this.KEY);
-
     if (!json || json.trim() === '') {
-      return null;
+      // create new device id
+      let newBrowserIdentifier = new BrowserIdentifierModel();
+      this.saveBrowserId(newBrowserIdentifier);
+      return newBrowserIdentifier;
     }
-
     try {
-      return JSON.parse(json) as BrowserIdentifierModel;
+      const parsed = JSON.parse(json);
+
+      const model = new BrowserIdentifierModel();
+      model.browserId = parsed.browserId;
+      model.isActive = parsed.isActive;
+      model.isUpdated = parsed.isUpdated;
+      model.createdAt = new Date(parsed.createdAt);
+      model.updatedAt = parsed.updatedAt ? new Date(parsed.updatedAt) : null;
+      model.deletedAt = parsed.deletedAt ? new Date(parsed.deletedAt) : null;
+
+      return model;
     } catch (err) {
       console.error(
         '[BrowserIdStore] Invalid token JSON in localStorage. Clearing.',
@@ -32,9 +43,12 @@ export class BrowserIdStoreService {
   // -----------------------------
   // SAVE device id
   // -----------------------------
-  saveBrowserId(deviceId: BrowserIdentifierModel): void {
+  saveBrowserId(browserIdId: BrowserIdentifierModel): void {
     try {
-      const json = JSON.stringify(deviceId);
+      const json = JSON.stringify(browserIdId);
+      // clear previous data
+      localStorage.removeItem(this.KEY);
+      // save new data
       localStorage.setItem(this.KEY, json);
     } catch (err) {
       console.error('[BrowserIdStore] Failed to save tokens', err);

@@ -1,0 +1,122 @@
+mat-card {
+  max-width: 400px;
+  width: 100%;
+  margin: 15rem auto;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+mat-form-field {
+  width: 100% !important;
+  margin-bottom: 1rem !important;
+
+  .eye-btn {
+    margin-right: 10px !important;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+  }
+
+  .eye-icon {
+    font-size: 20px !important;
+    /* smaller eye icon */
+  }
+}
+
+.form-control {
+  width: 100%;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #1b1515;
+}
+
+.login-btn {
+  width: 80%;
+  max-width: 260px;
+  border-radius: 999px;
+  border: none;
+  padding: 0.65rem 1.5rem;
+  background: linear-gradient(135deg, #2563eb, #1d4fd8a2);
+  color: #f9fafb;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+
+  /* shadow */
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+  cursor: pointer;
+  /* animation */
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.2s ease,
+    opacity 0.15s ease;
+}
+
+/* hover */
+.login-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8, #4568dbc9);
+  box-shadow: 0 16px 40px rgba(30, 64, 175, 0.45);
+  transform: translateY(-1px);
+}
+
+/* click */
+.login-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.35);
+}
+
+/* focus */
+.login-btn:focus-visible {
+  outline: 2px solid #bfdbfe;
+  outline-offset: 3px;
+}
+
+/* Disabled */
+.login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0.8rem 0 1.2rem 0;
+}
+
+.auth-link {
+  font-size: 0.92rem;
+  color: #7f8de7;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 500;
+  transition: 0.25s ease;
+}
+
+.auth-link mat-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.auth-link:hover {
+  color: #3f51b5;
+  transform: translateY(-1px);
+}
+
+.auth-link:active {
+  opacity: 0.7;
+}

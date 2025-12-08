@@ -1,0 +1,25 @@
+  @if (activationResult === 'Account activation successful')
+  {
+  <mat-card class="card-body" appearance="outlined">
+    <mat-card-content>
+      <p class="text-success fw-bold fs-5 mb-2 message">
+        <mat-icon>check</mat-icon> {{activationResult}}
+      </p>
+      <button routerLink="/authentication/login" class="btn btn-primary login-btn">
+        <mat-icon>login</mat-icon> Sign In
+      </button>
+    </mat-card-content>
+  </mat-card>
+  }@else
+  {
+  <mat-card class="card-body" appearance="outlined">
+    <mat-card-content>
+      <p class="text-danger fw-bold fs-5 mb-2 message">
+        <mat-icon>error</mat-icon> {{activationResult}}
+      </p>
+      <button routerLink=" /authentication/register" class="btn btn-primary login-btn">
+        <mat-icon>person_add</mat-icon> Register Again
+      </button>
+    </mat-card-content>
+  </mat-card>
+  }

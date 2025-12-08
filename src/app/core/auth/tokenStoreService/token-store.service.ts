@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { authTokenModel } from '../auth-token-model';
+import { AuthTokenModel } from '../auth-token-model';
+import { C } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class TokenStoreService {
   // -----------------------------
   // GET tokens
   // -----------------------------
-  getTokens(): authTokenModel | null {
+  getTokens(): AuthTokenModel | null {
     const json = localStorage.getItem(this.KEY);
 
     if (!json || json.trim() === '') {
@@ -18,7 +19,12 @@ export class TokenStoreService {
     }
 
     try {
-      return JSON.parse(json) as authTokenModel;
+      const parsed = JSON.parse(json);
+      const model = new AuthTokenModel();
+      model.accessToken = parsed.accessToken;
+      model.refreshToken = parsed.refreshToken;
+      model.expiresAtUtc = new Date(parsed.expiresAtUtc);
+      return model;
     } catch (err) {
       console.error(
         '[TokenStore] Invalid token JSON in localStorage. Clearing.',
@@ -32,7 +38,7 @@ export class TokenStoreService {
   // -----------------------------
   // SAVE tokens
   // -----------------------------
-  saveTokens(tokens: authTokenModel): void {
+  saveTokens(tokens: AuthTokenModel): void {
     try {
       const json = JSON.stringify(tokens);
       localStorage.setItem(this.KEY, json);

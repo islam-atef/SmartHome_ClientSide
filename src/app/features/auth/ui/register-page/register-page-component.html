@@ -1,0 +1,116 @@
+<mat-card class="card-body register-main-card" appearance="outlined">
+  <mat-card-header class="card-header text-center">
+    <div class="text-center w-100   ">
+      <div>
+        <h2 class=" fs-5 mb-2 ">Registration Form</h2>
+      </div>
+    </div>
+  </mat-card-header>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="w-100 email-field mb-3">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" autocomplete="email" (focus)="detectFocus('Email')">
+
+        @if (_email?.errors?.['email']) {
+        <mat-error>please enter a valid email address</mat-error>
+        }@else if (_email?.errors?.['emailExists']) {
+        <mat-error>email already exists</mat-error>
+        } @else {
+        <mat-error>this field is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100 username-field mb-3">
+        <mat-label>User Name</mat-label>
+        <input matInput type="text" formControlName="username" autocomplete="username"
+          (focus)="detectFocus('User Name')">
+
+        @if (_username?.errors?.['minlength']) {
+        <mat-error>the username must be at least 7 characters</mat-error>
+        }@else if (_username?.errors?.['usernameExists']) {
+        <mat-error>username already exists</mat-error>
+        }@else{
+        <mat-error>this field is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100 displayname-field mb-3">
+        <mat-label>Display Name</mat-label>
+        <input matInput type="text" formControlName="displayname" autocomplete="displayname"
+          (focus)="detectFocus('Display Name')">
+
+        @if (_displayname?.errors?.['minlength']) {
+        <mat-error>the display name must be at least 3 characters</mat-error>
+        }@else if(_displayname?.errors?.['maxlength']) {
+        <mat-error>the display name must be at most 20 characters</mat-error>
+        }@else {
+        <mat-error>this field is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100 password-field">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+          autocomplete="current-password" (focus)="detectFocus('Password')">
+
+        <a type="button" mat-icon-button matSuffix (click)="togglePassword()" class="eye-btn">
+          <mat-icon class="eye-icon">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </a>
+
+        @if (_password?.errors?.['pattern']) {
+        <mat-error>Password must contain at least one uppercase letter, one lowercase letter, one number, and be minium
+          8 characters long</mat-error>
+        }@else {
+        <mat-error>this field is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100 confirm-password-field">
+        <mat-label>confirm Password</mat-label>
+        <input matInput type="password" [type]="hideConfirmPassword ? 'password' : 'text'"
+          formControlName="confirmPassword" autocomplete="current-password" (focus)="detectFocus('Confirm Password')">
+
+        <a type="button" mat-icon-button matSuffix (click)="toggleConfirmPassword()" class="eye-btn">
+          <mat-icon class="eye-icon">{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </a>
+
+        @if (_confirmPassword?.hasError('passwordMismatch')) {
+        <mat-error>Passwords do not match</mat-error>
+        }@else {
+        <mat-error>this field is required</mat-error>
+        }
+
+      </mat-form-field>
+
+
+      @if(_email?.valid && _username?.valid && _displayname?.valid && _password?.valid && _confirmPassword?.valid)
+      {
+      <div class="checkbox-row">
+        <mat-checkbox class="accept-checkbox" formControlName="acceptCheckbox" #acceptCheckbox
+          (change)="detectFocus('Terms and Conditions')"> I accept all terms and conditions
+        </mat-checkbox>
+      </div>
+      }
+
+
+    </mat-card-content>
+    <app-info-card-component element={{focusField}}> </app-info-card-component>
+
+    <mat-card-actions class="register-main-card-actions">
+      <div>
+        <button mat-fab extended type="submit" class="btn btn-primary w-100 rounded-2 mb-3 register-btn"
+          [disabled]="registerForm.invalid ">
+          <mat-icon>add</mat-icon>
+          Register
+        </button>
+
+        <button mat-fab extended type="exit" class="btn btn-primary w-100 rounded-2 mb-3 cancel-btn"
+          routerLink="/authentication/login">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+      </div>
+    </mat-card-actions>
+  </form>
+</mat-card>

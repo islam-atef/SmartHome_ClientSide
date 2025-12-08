@@ -1,0 +1,52 @@
+#info-card {
+  width: 92%;
+  max-width: 100%;
+  align-self: stretch;
+  margin: 1rem;
+  margin-top: -0.5rem;
+  text-align: left;
+  flex-direction: column;
+  border-radius: 10px;
+  color: #7a7a7a;
+  background-color: #d2d7dd11;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  max-height: 210px;
+  overflow-y: auto;
+
+  .info-title {
+    color: #000000b2;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: left !important;
+    margin-bottom: -0.5rem;
+  }
+
+  p {
+    white-space: pre-line;
+  }
+
+  .generatePw-btn {
+    margin-top: 0.5rem;
+    font-weight: 500;
+    font-style: italic;
+    color: #3b3026ec;
+    font-size: .9rem;
+    text-transform: none;
+    margin-right: .5rem;
+    padding: 0.15rem 0.15rem;
+  }
+
+  .generatePw-label {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #0a0a0a33;
+    border-radius: 5px;
+    padding: 0.15rem 0.25rem;
+    color: #1f618aad;
+    font-size: 1rem;
+    font-weight: 500;
+    background-color: #fffffffd;
+  }
+
+
+}

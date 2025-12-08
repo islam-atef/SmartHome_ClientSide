@@ -1,0 +1,32 @@
+<mat-card class="card-body" appearance="outlined">
+  <mat-card-header>
+    <div class="text-center w-100">
+      <h3 class="fw-bold fs-5 mb-2">Device Verification</h3>
+      <p class="text-muted">Enter the code sent to your email</p>
+    </div>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form #otpForm="ngForm" (ngSubmit)="onSubmitOtp()">
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Code</mat-label>
+
+        <input matInput type="text" aria-label="Code" placeholder=" Enter the code sent to your email"
+          [(ngModel)]="answer.otpAnswer" name="otpCode" autocomplete="one-time-code" required />
+
+        @if(otpForm.submitted && !answer.otpAnswer){
+        <mat-error>This field is required</mat-error>
+        }
+
+      </mat-form-field>
+
+      <button mat-fab extended type="submit" class="btn btn-primary w-100 rounded-2 mb-3 submit-btn"
+        [disabled]="!answer.otpAnswer">
+        <mat-icon>send</mat-icon>
+        Submit Answer
+      </button>
+
+    </form>
+  </mat-card-content>
+</mat-card>

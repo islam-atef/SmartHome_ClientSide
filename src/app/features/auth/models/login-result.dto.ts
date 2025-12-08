@@ -1,5 +1,6 @@
 export interface LoginResultDto {
   isSuccess: boolean;
-  otpQuestionId: string;
+  isOtpSent: boolean;
+  otpQuestionId: string | null;
   errors: string | null;
 }
