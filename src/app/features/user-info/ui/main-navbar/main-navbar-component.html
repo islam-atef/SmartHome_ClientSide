@@ -1,0 +1,21 @@
+<mat-toolbar color="primary" class="navbar">
+
+  <div class="menu">
+    <button matButton [matMenuTriggerFor]="menu" class="menu-button">
+      <div class="user-info">
+        <img src="{{imageSource}}" alt="User Image" class="header-image">
+        <span class="user-name">{{userName}}</span>
+      </div>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>Account Settings <mat-icon>settings</mat-icon></button>
+      <button mat-menu-item>Logout<mat-icon>Logout</mat-icon></button>
+    </mat-menu>
+  </div>
+
+  <div class="search">
+    <input type="search" placeholder="Home Search" class="search-input">
+  </div>
+
+
+</mat-toolbar>

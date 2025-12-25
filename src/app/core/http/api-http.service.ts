@@ -44,6 +44,18 @@ export class ApiHttpService {
     return this.http.put<T>(this.buildUrl(url), body, options);
   }
 
+  // PATCH
+  patch<T>(
+    url: string,
+    body: any,
+    options?: {
+      params?: HttpParams | { [key: string]: any };
+      headers?: HttpHeaders | { [key: string]: string };
+    }
+  ) {
+    return this.http.patch<T>(this.buildUrl(url), body, options);
+  }
+
   // DELETE
   delete<T>(
     url: string,

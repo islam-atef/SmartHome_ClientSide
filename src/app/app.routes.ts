@@ -15,8 +15,15 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'Main',
         pathMatch: 'full',
+      },
+      {
+        path: 'Main',
+        loadComponent: () =>
+          import('./features/user-info/ui/main-page/main-component').then(
+            (m) => m.MainComponent
+          ),
       },
       {
         path: 'home',

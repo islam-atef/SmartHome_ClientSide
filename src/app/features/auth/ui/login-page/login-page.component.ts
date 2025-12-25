@@ -61,7 +61,7 @@ export class LoginPageComponent {
         if (res.isSuccess) {
           this.DeviceCheckFlag = false;
           alert('Login successful!');
-          this.router.navigate(['/home']);
+          this.router.navigate(['']);
         } else if (!res.isSuccess && res.isOtpSent) {
           this.OtpQuID = res.otpQuestionId;
           this.DeviceCheckFlag = true;

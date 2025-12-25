@@ -14,7 +14,6 @@ import { AccountActivationDto } from '../models/account-activation.dto';
   providedIn: 'root',
 })
 export class AuthApiService {
-  // verifyOtp() / refresh() / logout()
   constructor(private apiHttp: ApiHttpService) {}
 
   /**

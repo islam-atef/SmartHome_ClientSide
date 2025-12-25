@@ -41,7 +41,7 @@ export class DeviceVerificationComponent implements OnChanges {
       this.authFacade.sendOtp(this.answer).subscribe((res) => {
         if (res) {
           alert('Device verified successfully! Login complete.');
-          this.router.navigate(['/home']);
+          this.router.navigate(['']);
         } else {
           alert('Device verification failed. Please try again.');
           this.router.navigate(['/login']);
