@@ -6,7 +6,7 @@ import {
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { authInterceptorInterceptor } from './core/auth/authInterceptors/auth-interceptor';
+import { authInterceptor } from './core/auth/authInterceptors/auth-interceptor';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { browserIdInterceptor } from './core/browserIdentifier/browserIdInterceptors/browser-Id-interceptor';
 
@@ -15,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideHttpClient(
-      withInterceptors([authInterceptorInterceptor, browserIdInterceptor])
+      withInterceptors([authInterceptor, browserIdInterceptor])
     ),
     provideRouter(routes),
   ],

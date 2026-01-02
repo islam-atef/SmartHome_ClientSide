@@ -1,0 +1,28 @@
+<div class="form-shell">
+  <div class="form-head">
+    <h3>Update User Image</h3>
+    <p class="muted">Upload a clear profile photo.</p>
+  </div>
+
+  <div class="image-grid">
+    <div class="image-box">
+      <div class="label">Current</div>
+      <img [src]="currentImageUrl" alt="Current User Image" />
+    </div>
+
+    @if(newImageUrl){
+    <div class="image-box">
+      <div class="label">Preview</div>
+      <img [src]="newImageUrl" alt="New User Image" />
+    </div>
+    }
+
+  </div>
+
+  <div class="row">
+    <input type="file" (change)="onImageSelected($event)" accept="image/*">
+    <button mat-raised-button color="primary" (click)="uploadImage()" [disabled]="!file">
+      Upload
+    </button>
+  </div>
+</div>

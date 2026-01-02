@@ -26,6 +26,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'account-settings',
+        loadComponent: () =>
+          import(
+            './features/user-info/ui/account-setting-page/account-setting-page-component'
+          ).then((m) => m.AccountSettingPageComponent),
+      },
+      {
         path: 'home',
         loadComponent: () =>
           import('./features/home/ui/home-page/home-component').then(

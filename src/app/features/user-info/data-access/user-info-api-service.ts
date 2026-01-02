@@ -83,11 +83,23 @@ export class UserInfoApiService {
     );
   }
 
+  UpdateUserName(userName: string): Observable<boolean> {
+    const url = 'UserInfo/Update-UserName';
+    const body = { userName: userName };
+    return this.apiHttp.patch<boolean>(url, body).pipe(
+      map((res) => res ?? false),
+      tap((res) => console.log(res)),
+      catchError((error) => {
+        return of(error?.message || 'An unexpected error occurred');
+      })
+    );
+  }
+
   UpdateUserImage(image: File): Observable<string | null> {
     const url = 'UserInfo/Update-UserImage';
     const formData = new FormData();
-    formData.append('image', image);
-    return this.apiHttp.patch<string | null>(url, formData).pipe(
+    formData.append('Image', image);
+    return this.apiHttp.patch<string>(url, formData).pipe(
       map((res) => res ?? null),
       tap((res) => console.log(res)),
       catchError((error) => {

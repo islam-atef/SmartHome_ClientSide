@@ -1,69 +1,84 @@
 .navbar {
+  height: auto;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  background: #ffffff;
+  color: #1f2a37;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.user-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: linear-gradient(135deg, var(--primary), #d1d6e7);
+  color: white;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(79, 124, 255, 0.35);
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+}
+
+.user-name {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  text-transform: capitalize;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+  letter-spacing: 1px;
+  margin-left: 10px;
+}
+
+.chev {
+  color: rgba(255, 255, 255, .9);
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f1f4fa;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.search-ic {
+  opacity: .7;
+}
+
+.search-input {
   width: 100%;
-  padding: .2rem;
-  height: fit-content;
-  background-color: #0ebde9;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: #3d8297;
+}
 
-
-  .search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 1rem;
-
-    .search-input {
-      width: 80%;
-      height: 2.5rem;
-      padding: .5rem;
-      border: none;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      border-radius: 7px;
-    }
+@media (max-width: 600px) {
+  .navbar {
+    grid-template-columns: 1fr;
   }
 
-  .menu {
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    margin: 1rem;
-
-    .user-info {
-      margin-right: 1rem;
-
-      .header-image {
-        image-resolution: 100px 100px;
-        width: 80px;
-        min-width: 50px;
-        height: 80px;
-        min-height: 50px;
-        border-radius: 50%;
-        padding: 2rem auto;
-        margin-left: 1rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      .user-name {
-        color: white;
-        font-weight: 500;
-        font-size: medium;
-      }
-    }
-
-    .menu-button {
-      color: white;
-      font-weight: 500;
-      font-size: large;
-      background-color: transparent;
-      border: none;
-    }
-
-    .menu-item {
-      color: white;
-      font-weight: 500;
-      font-size: medium;
-    }
+  .user-name {
+    max-width: 220px;
   }
 }

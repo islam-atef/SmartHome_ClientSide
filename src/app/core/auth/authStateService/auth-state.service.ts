@@ -9,9 +9,17 @@ export class AuthStateService {
 
   setTokens(tokens: AuthTokenModel | null) {
     this.tokensSubject.next(tokens);
+    console.log('AuthStateService: setTokens: Tokens set:', tokens);
+    console.log(
+      `AuthStateService: setTokens: Observed Tokens: ${this.tokensSubject.getValue()}`
+    );
   }
 
   getTokensSnapshot(): AuthTokenModel | null {
+    console.log(
+      'AuthStateService: getTokensSnapshot: Tokens snapshot:',
+      this.tokensSubject.value
+    );
     return this.tokensSubject.value;
   }
 

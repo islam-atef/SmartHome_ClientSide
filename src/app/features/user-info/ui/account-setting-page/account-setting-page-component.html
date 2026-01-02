@@ -1,0 +1,56 @@
+<section class="account-page">
+  <header class="account-header">
+    <div class="account-header__card">
+      <div class="account-header__left">
+        <img class="avatar" [src]="userInfo?.userImageUrl" alt="User Image" />
+
+        <div class="identity">
+          <div class="identity__name">{{ userInfo?.name }}</div>
+          <div class="identity__meta">
+            <span class="chip">{{ userInfo?.userName }}</span>
+            <span class="sep">•</span>
+            <span class="muted">{{ userInfo?.email }}</span>
+          </div>
+
+          <div class="identity__meta">
+            <span class="muted">
+              {{ userInfo?.phoneNumber === "Not Exist" ? "Phone Number Not Set" : userInfo?.phoneNumber }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-header__actions">
+        <button mat-raised-button color="primary" routerLink="/">Back to Dashboard</button>
+        <button mat-stroked-button color="primary" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="account-content">
+    <mat-tab-group class="account-tabs">
+      <mat-tab label="User Name">
+        <div class="tab-card">
+          <app-user-name-component currentName="{{userInfo?.name}}" currentUserName="{{userInfo?.userName}}"
+            (nameUpdated)="onNameUpdated($event)" (userNameUpdated)="onUserNameUpdated($event)">
+          </app-user-name-component>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="User Phone">
+        <div class="tab-card">
+          <app-user-phone-component currentPhoneNumber="{{userInfo?.phoneNumber}}"
+            (phoneNumberUpdated)="onPhoneNumberUpdated($event)">
+          </app-user-phone-component>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="User Image">
+        <div class="tab-card">
+          <app-user-image-component currentImageUrl="{{userInfo?.userImageUrl}}" (newImageFile)="onImageUpdate($event)">
+          </app-user-image-component>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </main>
+</section>

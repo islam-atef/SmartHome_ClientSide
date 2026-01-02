@@ -23,6 +23,7 @@ import { ResetPasswordDto } from '../models/reset-password.dto';
 import { RegisterDto } from '../models/register.dto';
 import { E } from '@angular/cdk/keycodes';
 import { AccountActivationDto } from '../models/account-activation.dto';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -33,9 +34,11 @@ export class AuthFacadeService {
     private authState: AuthStateService,
     private browserIdState: BrowserIdStateService,
     private tokenStore: TokenStoreService,
-    private browserIdStore: BrowserIdStoreService
+    private browserIdStore: BrowserIdStoreService,
+    private router: Router
   ) {}
 
+  //#region: Authentication Initialization from Local Storage method
   initFromLocalStorage() {
     const tokenStored = this.tokenStore.getTokens();
     const browserIdStored = this.browserIdStore.getBrowserId();
@@ -51,74 +54,100 @@ export class AuthFacadeService {
       this._account_activation_PageAccessFlag.next(true);
     }
   }
+  //#endregion
 
-  /*******************************/
-  /* Authentication main methods */
-  /*******************************/
-
+  //#region: Authentication login and logout methods
   login(dto: LoginRequestDto): Observable<LoginResultDto> {
     return this.authApi.beginLogin(dto).pipe(
-      map(
-        (res) => {
-          if (!res || typeof res === 'string') {
-            return {
-              isSuccess: false,
-              isOtpSent: false,
-              otpQuestionId: null,
-              errors: res || 'An unexpected error occurred',
-            } as LoginResultDto;
-          }
-          if (res.accessToken && res.refreshToken) {
-            this.applyTokens(res);
-            return {
-              isSuccess: true,
-              isOtpSent: false,
-              otpQuestionId: null,
-              errors: null,
-            } as LoginResultDto;
-          } else if (res.otpQuestionId) {
-            // the Browser not Authenticated
-            return {
-              isSuccess: false,
-              isOtpSent: true,
-              otpQuestionId: res.otpQuestionId,
-              errors: 'Check your email for the OTP code',
-            } as LoginResultDto;
-          }
+      map((res: AuthResponseDto | null | string) => {
+        if (!res || typeof res === 'string') {
           return {
             isSuccess: false,
             isOtpSent: false,
             otpQuestionId: null,
-            errors: 'An unexpected error occurred',
+            errors: res || 'An unexpected error occurred',
           } as LoginResultDto;
-        },
-        catchError((error) => {
-          console.error('Login error in the facade service:', error);
-          return of({
-            isSuccess: false,
+        }
+        if (res.accessToken && res.refreshToken) {
+          // successful login
+          // apply the received tokens
+          this.applyTokens(res);
+          return {
+            isSuccess: true,
             isOtpSent: false,
             otpQuestionId: null,
-            errors: error?.message || 'An unexpected error occurred',
-          } as LoginResultDto);
-        })
-      )
+            errors: null,
+          } as LoginResultDto;
+        } else if (res.otpQuestionId) {
+          // the Browser not Authenticated
+          return {
+            isSuccess: false,
+            isOtpSent: true,
+            otpQuestionId: res.otpQuestionId,
+            errors: 'Check your email for the OTP code',
+          } as LoginResultDto;
+        }
+        return {
+          isSuccess: false,
+          isOtpSent: false,
+          otpQuestionId: null,
+          errors: 'An unexpected error occurred',
+        } as LoginResultDto;
+      }),
+      tap((result) => {
+        console.log(
+          'AuthFacadeService: Login: Login result in the facade service:',
+          result
+        );
+      }),
+      catchError((error) => {
+        console.error(
+          'AuthFacadeService: Login: Login error in the facade service:',
+          error
+        );
+        return of({
+          isSuccess: false,
+          isOtpSent: false,
+          otpQuestionId: null,
+          errors: error?.message || 'An unexpected error occurred',
+        } as LoginResultDto);
+      })
     );
   }
 
-  logout() {
-    return this.authApi
-      .logout(this.tokenStore.getTokens()?.refreshToken || '')
-      .pipe(
-        tap(() => {
-          this.authState.setTokens(null);
-          this.tokenStore.clearTokens();
-        })
+  logout(email: string) {
+    let token = this.authState.getTokensSnapshot();
+    if (!token?.refreshToken) {
+      console.log(
+        'AuthFacadeService: logout: No refresh token found, cannot logout'
       );
+      return EMPTY;
+    }
+    this.authApi.logout(token.refreshToken, email).subscribe({
+      next: (result) => {
+        if (result) {
+          console.log(
+            'AuthFacadeService: logout: User logged out successfully'
+          );
+          this.tokenStore.clearTokens();
+          this.authState.setTokens(null);
+          this.router.navigate(['/authentication/login']);
+        } else {
+          console.log('AuthFacadeService: logout: Logout failed');
+        }
+      },
+      error: (error) => {
+        console.error(
+          'AuthFacadeService: logout: Logout error in the facade service:',
+          error
+        );
+      },
+    });
+    return EMPTY;
   }
+  //#endregion
 
-  /*******************************/
-  /* password management methods */
-  /*******************************/
+  //#region: password management methods
   private _reset_password_PageAccessFlag = new BehaviorSubject<boolean>(
     this.getResetPWFlagFromStorage()
   );
@@ -127,6 +156,10 @@ export class AuthFacadeService {
 
   private getResetPWFlagFromStorage(): boolean {
     const stored = localStorage.getItem('account_activation_flag');
+    console.log(
+      'AuthFacadeService: getResetPWFlagFromStorage: Stored Flag is:',
+      stored
+    );
     return stored === 'true'; // Returns TRUE if localStorage has 'true', FALSE if null or anything else
   }
 
@@ -137,6 +170,10 @@ export class AuthFacadeService {
   reset_password_PageAccessFlag(value: boolean) {
     this._reset_password_PageAccessFlag.next(value);
     this.saveResetPWFlagToStorage(value);
+    console.log(
+      'AuthFacadeService: reset_password_PageAccessFlag: Flag set to',
+      value
+    );
   }
 
   sendForgotPWMail(email: string): Observable<boolean> {
@@ -144,11 +181,17 @@ export class AuthFacadeService {
       map((res) => true),
       tap((success) => {
         if (success) {
+          console.log(
+            'AuthFacadeService: sendForgotPWMail: Password reset email sent'
+          );
           this.reset_password_PageAccessFlag(true);
         }
       }),
       catchError((error) => {
-        console.error('Password reset error in the facade service:', error);
+        console.error(
+          'AuthFacadeService: sendForgotPWMail: Password reset email has as error in the facade service:',
+          error
+        );
         return of(false);
       })
     );
@@ -160,22 +203,28 @@ export class AuthFacadeService {
       // 2) Log based on the boolean result
       tap((success) => {
         if (success) {
-          console.log('Password reset successful');
+          console.log(
+            'AuthFacadeService: resetPassword: Password reset successful'
+          );
         } else {
-          console.log('Password reset failed');
+          console.log(
+            'AuthFacadeService: resetPassword: Password reset failed'
+          );
         }
         this.reset_password_PageAccessFlag(false);
       }),
       catchError((error) => {
-        console.error('Password reset error in the facade service:', error);
+        console.error(
+          'AuthFacadeService: resetPassword: Password reset error in the facade service:',
+          error
+        );
         return of(false);
       })
     );
   }
+  //#endregion
 
-  /***********************************/
-  /* Registration management methods */
-  /***********************************/
+  //#region: Registration management methods
   private _account_activation_PageAccessFlag = new BehaviorSubject<boolean>(
     this.getActivationFlagFromStorage()
   );
@@ -184,6 +233,10 @@ export class AuthFacadeService {
 
   private getActivationFlagFromStorage(): boolean {
     const stored = localStorage.getItem('account_activation_flag');
+    console.log(
+      'AuthFacadeService: getActivationFlagFromStorage: Stored Flag is:',
+      stored
+    );
     return stored === 'true'; // Returns TRUE if localStorage has 'true', FALSE if null or anything else
   }
 
@@ -194,6 +247,10 @@ export class AuthFacadeService {
   account_activation_PageAccessFlag(value: boolean) {
     this._account_activation_PageAccessFlag.next(value);
     this.saveActivationFlagToStorage(value);
+    console.log(
+      'AuthFacadeService: account_activation_PageAccessFlag: Flag set to',
+      value
+    );
   }
 
   register(dto: RegisterDto): Observable<boolean> {
@@ -202,18 +259,17 @@ export class AuthFacadeService {
       // 2) Log based on the boolean result
       tap((success) => {
         if (success) {
-          console.log('Registration successful');
+          console.log('AuthFacadeService: register: Registration successful');
           this.account_activation_PageAccessFlag(true);
-          this.account_activation_PageAccessFlag$.subscribe((value) => {
-            console.log(value);
-            // Handle the value here
-          });
         } else {
-          console.log('Registration failed');
+          console.log('AuthFacadeService: register: Registration failed');
         }
       }),
       catchError((error: any) => {
-        console.error('Registration error in the facade service:', error);
+        console.error(
+          'AuthFacadeService: register: Registration error in the facade service:',
+          error
+        );
         return of(false);
       })
     );
@@ -225,38 +281,41 @@ export class AuthFacadeService {
       // 2) Log based on the boolean result
       tap((success) => {
         if (success) {
-          console.log('Account activation successful');
+          console.log(
+            'AuthFacadeService: accountActivation: Account activation successful'
+          );
           this.account_activation_PageAccessFlag(false);
-          this.account_activation_PageAccessFlag$.subscribe((value) => {
-            console.log(value);
-            // Handle the value here
-          });
-          this.account_activation_PageAccessFlag$.subscribe((value) => {
-            console.log(value);
-            // Handle the value here
-          });
         } else {
-          console.log('Account activation failed');
+          console.log(
+            'AuthFacadeService: accountActivation: Account activation failed'
+          );
         }
       }),
       catchError((error: any) => {
-        console.error('Account activation error in the facade service:', error);
+        console.error(
+          'AuthFacadeService: accountActivation: Account activation error in the facade service:',
+          error
+        );
         return of(false);
       })
     );
   }
+  //#endregion
 
-  /****************************/
-  /* Token management methods */
-  /****************************/
-
+  //#region: Token management methods
   refresh() {
     // If there is no refresh token, do nothing
     const t = this.tokenStore.getTokens();
-    if (!t?.refreshToken) return EMPTY;
 
+    if (!t?.refreshToken) {
+      console.log('AuthFacadeService: refresh: No refresh token found');
+      return EMPTY;
+    }
+    console.log('AuthFacadeService: refresh: current tokens', t);
     return this.authApi.refresh(t.refreshToken).pipe(
+      map((res) => res),
       tap((res) => {
+        console.log('AuthFacadeService: refresh: refresh result', res);
         // If the response is null or missing either the access token or refresh token, do nothing
         if (!res || !res.accessToken || !res.refreshToken) {
           this.authState.setTokens(null);
@@ -265,17 +324,22 @@ export class AuthFacadeService {
         // else, apply the response to the token store and auth state
         this.tokenStore.saveTokens(res);
         this.authState.setTokens(res);
+      }),
+      catchError((error: any) => {
+        console.error('AuthFacadeService: refresh: error', error);
+        return of(null);
       })
     );
   }
+  //#endregion
 
-  /*********************************/
-  /* User Identifier check methods */
-  /*********************************/
+  //#region: User Identifier check methods
   checkByEmail(email: string): Observable<boolean> {
     return this.authApi.checkEmail(email).pipe(
       map((res) => !!res),
-      tap((res) => console.log(res)),
+      tap((res) =>
+        console.log(`AuthFacadeService: checkByEmail: Email exists: ${res}`)
+      ),
       catchError((error: any) => of(false))
     );
   }
@@ -283,14 +347,17 @@ export class AuthFacadeService {
   checkByUsername(username: string): Observable<boolean> {
     return this.authApi.checkUsername(username).pipe(
       map((res) => !!res),
-      tap((res) => console.log(res)),
+      tap((res) =>
+        console.log(
+          `AuthFacadeService: checkByUsername: Username exists: ${res}`
+        )
+      ),
       catchError((error: any) => of(false))
     );
   }
+  //#endregion
 
-  /******************************/
-  /* Browser Identifier methods */
-  /******************************/
+  //#region: Browser Identifier methods
   sendOtp(answer: OtpAnswerDto): Observable<boolean> {
     if (!answer) return EMPTY;
     return this.authApi.verifyOtp(answer).pipe(
@@ -308,25 +375,43 @@ export class AuthFacadeService {
     return this.authApi.updateBrowserId(newBrowserIdentifier.browserId).pipe(
       map((res) => {
         if (res == null) {
-          console.log('Error updating browser id');
+          console.error(
+            'AuthFacadeService: UpdateBrowserId: Error updating browser id'
+          );
           return false;
         }
         this.browserIdStore.saveBrowserId(newBrowserIdentifier);
         this.browserIdState.setIdentifier(newBrowserIdentifier);
-        console.log('Browser id updated');
+        console.log('AuthFacadeService: UpdateBrowserId: Browser id updated');
         return true;
       })
     );
   }
+  //#endregion
 
+  //#region: Token application methods
   private applyTokens(res: AuthResponseDto) {
     if (!res || !res.accessToken || !res.refreshToken) return;
     const tokens: AuthTokenModel = {
       accessToken: res.accessToken!,
       refreshToken: res.refreshToken!,
-      expiresAtUtc: res.expireAtUtc!,
+      expiresAtUtc: res.expiresAtUtc!,
     };
+    console.log('AuthFacadeService: applyTokens: applying tokens:', tokens);
     this.tokenStore.saveTokens(tokens);
     this.authState.setTokens(tokens);
   }
+
+  changeTokens(tokens: AuthTokenModel | null) {
+    if (!tokens) {
+      this.tokenStore.clearTokens();
+      this.authState.setTokens(null);
+      console.log('AuthFacadeService: changeTokens: Tokens cleared');
+      return;
+    }
+    this.tokenStore.saveTokens(tokens);
+    this.authState.setTokens(tokens);
+    console.log('AuthFacadeService: changeTokens: Tokens updated');
+  }
+  //#endregion
 }

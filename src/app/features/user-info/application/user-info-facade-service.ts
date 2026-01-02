@@ -11,9 +11,7 @@ import { UserHomeSubscriptionRequestDTO } from '../models/user-home-subRequest.d
 export class UserInfoFacadeService {
   constructor(private userInfoApi: UserInfoApiService) {}
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////
-  // General Info
-  ////////////////////////////////////////////////////////////////////////////////////////////////
+  //#region: User General Info
   private _userData = new BehaviorSubject<UserGeneralInfoDTO | null>(null);
   userData$ = this._userData.asObservable();
   setUserData(data: UserGeneralInfoDTO | null) {
@@ -43,7 +41,7 @@ export class UserInfoFacadeService {
         this.setUserData(res);
       },
       error: (error) =>
-        console.log(`UserInfoFacadeService: getUserData: ${error}`),
+        console.error(`UserInfoFacadeService: getUserData: ${error}`),
     });
 
     this.userInfoApi.getUserHomes().subscribe({
@@ -54,13 +52,12 @@ export class UserInfoFacadeService {
         this.setUserHomes(res);
       },
       error: (error) =>
-        console.log(`UserInfoFacadeService: getUserData: ${error}`),
+        console.error(`UserInfoFacadeService: getUserData: ${error}`),
     });
   }
+  //#endregion
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////
-  // Subscriptions
-  ////////////////////////////////////////////////////////////////////////////////////////////////
+  //#region: User Home Subscriptions
   private _userSubscriptions = new BehaviorSubject<
     UserHomeSubscriptionRequestDTO[] | null
   >(null);
@@ -82,7 +79,7 @@ export class UserInfoFacadeService {
         this.setUserSubscriptions(res);
       },
       error: (error) =>
-        console.log(`UserInfoFacadeService: getUserSubscriptions: ${error}`),
+        console.error(`UserInfoFacadeService: getUserSubscriptions: ${error}`),
     });
   }
 
@@ -121,10 +118,9 @@ export class UserInfoFacadeService {
       )
     );
   }
+  //#endregion
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////
-  // Data Modification
-  ////////////////////////////////////////////////////////////////////////////////////////////////
+  //#region: User Data Modification
   UpdatePhoneNumber(phoneNumber: string) {
     this.userInfoApi.UpdatePhoneNumber(phoneNumber).subscribe({
       next: (res) => {
@@ -138,7 +134,7 @@ export class UserInfoFacadeService {
         }
       },
       error: (error) =>
-        console.log(`UserInfoFacadeService: UpdatePhoneNumber: ${error}`),
+        console.error(`UserInfoFacadeService: UpdatePhoneNumber: ${error}`),
     });
   }
 
@@ -157,8 +153,30 @@ export class UserInfoFacadeService {
         }
       },
       error: (error) =>
-        console.log(` UserInfoFacadeService: UpdateDisplayName: ${error}`),
+        console.error(` UserInfoFacadeService: UpdateDisplayName: ${error}`),
     });
+  }
+
+  UpdateUserName(userName: string): boolean | string {
+    this.userInfoApi.UpdateUserName(userName).subscribe({
+      next: (res: boolean) => {
+        console.log(` UserInfoFacadeService: UpdateUserName: result: ${res}`);
+        if (res) {
+          let data = this._userData.getValue();
+          if (data) {
+            data.userName = userName;
+            this.setUserData(data);
+          }
+          return true;
+        }
+        return false;
+      },
+      error: (error) => {
+        console.error(` UserInfoFacadeService: UpdateUserName: ${error}`);
+        return error?.message || 'An unexpected error occurred';
+      },
+    });
+    return false;
   }
 
   UpdateUserImage(image: File) {
@@ -174,7 +192,8 @@ export class UserInfoFacadeService {
         }
       },
       error: (error) =>
-        console.log(`UserInfoFacadeService: UpdateUserImage: ${error}`),
+        console.error(`UserInfoFacadeService: UpdateUserImage: ${error}`),
     });
   }
+  //#endregion
 }

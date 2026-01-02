@@ -1,0 +1,47 @@
+.user-phone-component form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-phone-component h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2a37;
+}
+
+.current-phone-number,
+.new-phone-number {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.user-phone-component input {
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(31, 42, 55, .15);
+  padding: 0 12px;
+  background: #fff;
+}
+
+.user-phone-component input:focus {
+  outline: none;
+  border-color: rgba(79, 124, 255, .7);
+  box-shadow: 0 0 0 3px rgba(79, 124, 255, .15);
+}
+
+.user-phone-component small {
+  color: #b42318;
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+
+  .current-phone-number,
+  .new-phone-number {
+    grid-template-columns: 1fr;
+  }
+}

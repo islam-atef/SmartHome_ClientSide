@@ -1,21 +1,23 @@
 <mat-toolbar color="primary" class="navbar">
-
-  <div class="menu">
-    <button matButton [matMenuTriggerFor]="menu" class="menu-button">
-      <div class="user-info">
-        <img src="{{imageSource}}" alt="User Image" class="header-image">
-        <span class="user-name">{{userName}}</span>
-      </div>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>Account Settings <mat-icon>settings</mat-icon></button>
-      <button mat-menu-item>Logout<mat-icon>Logout</mat-icon></button>
-    </mat-menu>
-  </div>
+  <button mat-button [matMenuTriggerFor]="menu" class="user-btn">
+    <img [src]="imageSource" alt="User Image" class="avatar">
+    <span class="user-name">{{ userName }}</span>
+    <mat-icon class="chev">expand_more</mat-icon>
+  </button>
 
   <div class="search">
-    <input type="search" placeholder="Home Search" class="search-input">
+    <mat-icon class="search-ic">search</mat-icon>
+    <input type="search" placeholder="Search homes..." class="search-input" />
   </div>
 
-
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/account-settings">
+      <mat-icon>settings</mat-icon>
+      <span>Account Settings</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
 </mat-toolbar>

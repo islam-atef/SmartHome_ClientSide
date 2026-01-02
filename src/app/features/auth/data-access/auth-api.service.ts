@@ -16,6 +16,7 @@ import { AccountActivationDto } from '../models/account-activation.dto';
 export class AuthApiService {
   constructor(private apiHttp: ApiHttpService) {}
 
+  //#region: Authentication methods
   /**
    * Begins the login process using the provided email and password.
    * @param data A LoginRequestDto containing the email and password to be used for login.
@@ -51,7 +52,7 @@ export class AuthApiService {
    */
   refresh(refreshToken: string): Observable<AuthTokenModel | null> {
     if (!refreshToken) return of(null);
-    const body = { refreshToken: refreshToken };
+    const body = { refreshTK: refreshToken };
     const url = 'Auth/refresh-token';
     return this.apiHttp.post<AuthTokenModel>(url, body).pipe(
       map((res) =>
@@ -72,13 +73,25 @@ export class AuthApiService {
    * @param refreshToken - The refresh token to be used for logging out.
    * @returns An observable that resolves to true if the logout was successful, false otherwise.
    */
-  logout(refreshToken: string): Observable<boolean> {
+  logout(refreshToken: string, email: string): Observable<boolean | null> {
     if (!refreshToken) return of(false);
-    const body = { refreshToken: refreshToken };
     const url = 'Auth/logout';
-    return this.apiHttp.post<boolean>(url, body);
+    const body = { refreshToken: refreshToken, userEmail: email };
+    return this.apiHttp.post<boolean>(url, body).pipe(
+      map((res) => !!res),
+      tap((res) => console.log('AuthApiService: logout: Logout result:', res)),
+      catchError((error) => {
+        console.error(
+          'AuthApiService: logout error:',
+          error?.message || 'An unexpected error occurred'
+        );
+        return of(false);
+      })
+    );
   }
+  //#endregion
 
+  //#region: Password Recovery methods
   forgotPassword(email: string): Observable<any> {
     if (!email) return of(null);
     const url = 'Auth/forgot-password';
@@ -101,7 +114,9 @@ export class AuthApiService {
       })
     );
   }
+  //#endregion
 
+  //#region: Registration methods
   register(dto: RegisterDto): Observable<boolean> {
     if (!dto) return of(false);
     const url = 'Auth/register';
@@ -114,7 +129,10 @@ export class AuthApiService {
     return this.apiHttp.post<boolean>(url, body).pipe(
       map((res) => !!res),
       catchError((error: any) => {
-        console.error('Registration error in the API service:', error);
+        console.error(
+          'AuthApiService: register: Registration error in the API service:',
+          error
+        );
         return of(false);
       })
     );
@@ -165,11 +183,9 @@ export class AuthApiService {
         })
       );
   }
+  //#endregion
 
-  /******************************/
-  /* Browser Identifier methods */
-  /******************************/
-
+  //#region: Browser Identifier methods */
   /**
    * Verifies the OTP answer provided by the user.
    * @param answer - An OtpAnswerDto containing the OTP question ID and answer.
@@ -209,4 +225,5 @@ export class AuthApiService {
       .post<boolean>(url, body)
       .pipe(map((res) => res ?? false));
   }
+  //#endregion
 }

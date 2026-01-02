@@ -1,0 +1,28 @@
+<div class="user-phone-component">
+  <form #f="ngForm">
+    <h3>Phone Number</h3>
+    <div class="current-phone-number">
+      <label for="currentPhoneNumber" class="me-2">Current Phone Number:</label>
+      <span id="currentPhoneNumber">{{ currentPhoneNumber }}</span>
+    </div>
+    <div class="new-phone-number">
+      <label for="newPhoneNumber" class="me-2">New Phone Number:</label>
+      <input type="text" id="newPhoneNumber" name="phoneNumber" #phoneNumber="ngModel" ngModel required minlength="11"
+        maxlength="11">
+    </div>
+    @if(phoneNumber.invalid && phoneNumber.touched){
+    @if(phoneNumber.errors?.['required'])
+    {
+    <small>
+      phoneNumber is required
+    </small>
+    }@else {
+    <small>
+      phoneNumber must be 11 Digits
+    </small>
+    }
+    }
+    <button mat-raised-button color="primary" (click)="onUpdatePhoneNumber(phoneNumber.value)"
+      [disabled]=" phoneNumber.invalid">Save Changes</button>
+  </form>
+</div>

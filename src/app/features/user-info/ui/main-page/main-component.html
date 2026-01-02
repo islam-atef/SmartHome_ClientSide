@@ -1,12 +1,14 @@
-<header>
-  <app-main-navbar-component userName="{{userName}}" imageSource="{{userImage}}"></app-main-navbar-component>
+<header class="main-header">
+  <app-main-navbar-component [userName]="userName" [imageSource]="userImage">
+  </app-main-navbar-component>
 </header>
 
-<body>
-  @for (home of userHomes; track $index) {
-  <app-home-card-component [home]="home"></app-home-card-component>
-  }
-  @empty {
-  <app-home-card-component></app-home-card-component>
-  }
-</body>
+<main class="main-body">
+  <section class="homes-grid">
+    @for (home of userHomes; track $index) {
+    <app-home-card-component [home]="home"></app-home-card-component>
+    } @empty {
+    <app-home-card-component></app-home-card-component>
+    }
+  </section>
+</main>

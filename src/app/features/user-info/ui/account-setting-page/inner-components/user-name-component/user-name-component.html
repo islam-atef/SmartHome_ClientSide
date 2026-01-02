@@ -1,0 +1,53 @@
+<div class="user-name-component">
+  <form #f="ngForm">
+    <h3>User Name</h3>
+    <div class="displayname">
+      <div class="current-name">
+        <label for="currentName" class="me-2">Current Display Name:</label>
+        <span id="currentName">{{ currentName }}</span>
+      </div>
+      <div class="new-name">
+        <label for="newName" class="me-2">New Display Name:</label>
+        <input name="displayname" #displayname="ngModel" type="text" id="newName" ngModel required minlength="10">
+      </div>
+      @if(displayname.invalid && displayname.touched){
+      @if(displayname.errors?.['required'])
+      {
+      <small>
+        Password is required
+      </small>
+      }@else {
+      <small>
+        Password must be at least 10 characters
+      </small>
+      }
+      }
+      <button mat-raised-button color="primary" (click)="updateName( displayname.value)"
+        [disabled]="displayname.invalid">Save Changes</button>
+    </div>
+    <div class="username">
+      <div class="current-name">
+        <label for="currentName" class="me-2">Current User Name:</label>
+        <span id="currentName">{{ currentUserName }}</span>
+      </div>
+      <div class="new-name">
+        <label for="newName" class="me-2">New User Name:</label>
+        <input type="text" id="newName" name="username" #username="ngModel" ngModel required minlength="6">
+      </div>
+      @if(username.invalid && username.touched){
+      @if(username.errors?.['required'])
+      {
+      <small>
+        username is required
+      </small>
+      }@else {
+      <small>
+        username must be at least 6 characters
+      </small>
+      }
+      }
+      <button mat-raised-button color="primary" (click)="updateUserName(username.value)"
+        [disabled]="username.invalid">Save Changes</button>
+    </div>
+  </form>
+</div>

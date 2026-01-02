@@ -1,0 +1,58 @@
+.user-name-component form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.user-name-component h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2a37;
+}
+
+.displayname,
+.username {
+  border: 1px solid rgba(31, 42, 55, .08);
+  background: #fafbff;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.current-name,
+.new-name {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.user-name-component input {
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(31, 42, 55, .15);
+  padding: 0 12px;
+  background: #fff;
+}
+
+.user-name-component input:focus {
+  outline: none;
+  border-color: rgba(79, 124, 255, .7);
+  box-shadow: 0 0 0 3px rgba(79, 124, 255, .15);
+}
+
+.user-name-component small {
+  color: #b42318;
+  font-size: 12px;
+}
+
+@media (max-width: 700px) {
+
+  .current-name,
+  .new-name {
+    grid-template-columns: 1fr;
+  }
+}
