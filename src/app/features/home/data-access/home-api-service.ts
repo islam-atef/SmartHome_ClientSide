@@ -6,7 +6,7 @@ import { HomeSubscriptionRequestDTO } from '../models/home-subscription-request.
 import { CreateHome } from '../models/create-home.dto';
 import { RenameHomeDto } from '../models/rename-home.dto';
 import { AddRoomDTO } from '../models/add-room.dto';
-import { AddNewUserDTO as UserDTO } from '../models/user.dto';
+import { UserDTO as UserDTO } from '../models/user.dto';
 import { DeleteRoomDTO } from '../models/delete-room.dto';
 
 @Injectable({
@@ -113,7 +113,7 @@ export class HomeApiService {
     const url = 'HomeManagement/Add-NewUser';
     const body = {
       homeId: user.homeId,
-      newUserId: user.newUserId,
+      newUserId: user.userId,
     };
     return this.apiHttp.post<boolean>(url, body).pipe(
       map((res) => res ?? false),
@@ -129,7 +129,7 @@ export class HomeApiService {
     const url = 'HomeManagement/Delete-User';
     const query = {
       homeId: user.homeId,
-      newUserId: user.newUserId,
+      newUserId: user.userId,
     };
     return this.apiHttp.delete<boolean>(url, { params: query }).pipe(
       map((res) => res ?? false),

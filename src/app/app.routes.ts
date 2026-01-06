@@ -33,11 +33,18 @@ export const routes: Routes = [
           ).then((m) => m.AccountSettingPageComponent),
       },
       {
-        path: 'home',
+        path: 'home/:homeId',
         loadComponent: () =>
           import('./features/home/ui/home-page/home-component').then(
             (m) => m.HomeComponent
           ),
+      },
+      {
+        path: 'home/new',
+        loadComponent: () =>
+          import(
+            './features/home/ui/create-new-home-page/create-new-home-component'
+          ).then((m) => m.CreateNewHomeComponent),
       },
     ],
   },

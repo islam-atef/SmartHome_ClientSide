@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { UserHomeDTO } from '../../../user-info/models/user-home.dto';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-card-component',
@@ -9,12 +10,28 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './home-card-component.css',
 })
 export class HomeCardComponent implements OnInit {
-  gotoHome() {
-    throw new Error('Method not implemented.');
-  }
+  private _router = inject(Router);
+
   @Input() home: UserHomeDTO = new UserHomeDTO();
 
+  homeExists: boolean = false;
+  homeName = '';
+
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    if (this.home) {
+      this.homeExists = true;
+      this.homeName = this.home.HomeName;
+    } else {
+      this.homeExists = false;
+      this.homeName = 'Add New Home';
+    }
+  }
+
+  gotoHome() {
+    this._router.navigate(['/home', this.home.HomeId]);
+  }
+
+  NewHome() {
+    this._router.navigate([`/home/new`]);
   }
 }

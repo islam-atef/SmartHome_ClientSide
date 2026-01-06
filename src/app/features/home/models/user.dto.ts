@@ -1,4 +1,4 @@
-export class AddNewUserDTO {
+export class UserDTO {
   homeId: string = '';
-  newUserId: string = '';
+  userId: string = '';
 }
