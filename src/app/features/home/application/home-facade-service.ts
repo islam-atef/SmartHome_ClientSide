@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HomeApiService } from '../data-access/home-api-service';
-import { HomeDataDTO } from '../models/home-data.dto';
-import { HomeSubscriptionRequestDTO } from '../models/home-subscription-request.dto';
-import { CreateHome } from '../models/create-home.dto';
-import { AddRoomDTO } from '../models/add-room.dto';
-import { DeleteRoomDTO } from '../models/delete-room.dto';
-import { UserDTO } from '../models/user.dto';
+import { HomeDataDTO } from '../models/response-dtos/home-data.dto';
+import { HomeSubscriptionRequestDTO } from '../models/response-dtos/home-subscription-request.dto';
+import { CreateHome } from '../models/response-dtos/create-home.dto';
+import { AddRoomDTO } from '../models/response-dtos/add-room.dto';
+import { DeleteRoomDTO } from '../models/response-dtos/delete-room.dto';
+import { UserDTO } from '../models/response-dtos/user.dto';
+import { AddHomeDto } from '../models/request-dtos/add-home-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -55,30 +56,26 @@ export class HomeFacadeService {
     return [];
   }
 
-  createNewHome(
-    homeName: string,
-    longitude: number,
-    latitude: number
-  ): boolean {
+  createNewHome(homeData: AddHomeDto): string {
     const home: CreateHome = {
-      name: homeName,
-      longitude: longitude,
-      latitude: latitude,
+      name: homeData.homeName,
+      longitude: homeData.longitude,
+      latitude: homeData.latitude,
     };
     this.homeApi.createNewHome(home).subscribe({
-      next: (res: boolean) => {
+      next: (res: string) => {
         console.log('HomeFacadeService: createNewHome: result:', res);
         if (res) {
           return res;
         } else {
           console.log('HomeFacadeService: createNewHome: Empty home data');
-          return false;
+          return '';
         }
       },
       error: (error) =>
         console.log('HomeFacadeService: createNewHome: errors:', error),
     });
-    return false;
+    return '';
   }
 
   addRoom(roomName: string, homeId: string): boolean {

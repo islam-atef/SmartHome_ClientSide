@@ -1,4 +1,11 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { UserHomeDTO } from '../../../user-info/models/user-home.dto';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -8,6 +15,7 @@ import { Router } from '@angular/router';
   imports: [MatIconModule],
   templateUrl: './home-card-component.html',
   styleUrl: './home-card-component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeCardComponent implements OnInit {
   private _router = inject(Router);
@@ -17,14 +25,17 @@ export class HomeCardComponent implements OnInit {
   homeExists: boolean = false;
   homeName = '';
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
-    if (this.home) {
+    if (this.home.HomeId) {
       this.homeExists = true;
       this.homeName = this.home.HomeName;
     } else {
       this.homeExists = false;
       this.homeName = 'Add New Home';
     }
+    this.cdr.detectChanges();
   }
 
   gotoHome() {
@@ -32,6 +43,6 @@ export class HomeCardComponent implements OnInit {
   }
 
   NewHome() {
-    this._router.navigate([`/home/new`]);
+    this._router.navigate([`/new-home`]);
   }
 }

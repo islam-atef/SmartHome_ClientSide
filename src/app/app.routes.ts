@@ -40,7 +40,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'home/new',
+        path: 'new-home',
         loadComponent: () =>
           import(
             './features/home/ui/create-new-home-page/create-new-home-component'

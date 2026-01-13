@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ApiHttpService } from '../../../core/http/api-http.service';
 import { catchError, map, Observable, of, tap } from 'rxjs';
-import { HomeDataDTO } from '../models/home-data.dto';
-import { HomeSubscriptionRequestDTO } from '../models/home-subscription-request.dto';
-import { CreateHome } from '../models/create-home.dto';
-import { RenameHomeDto } from '../models/rename-home.dto';
-import { AddRoomDTO } from '../models/add-room.dto';
-import { UserDTO as UserDTO } from '../models/user.dto';
-import { DeleteRoomDTO } from '../models/delete-room.dto';
+import { HomeDataDTO } from '../models/response-dtos/home-data.dto';
+import { HomeSubscriptionRequestDTO } from '../models/response-dtos/home-subscription-request.dto';
+import { CreateHome } from '../models/response-dtos/create-home.dto';
+import { RenameHomeDto } from '../models/response-dtos/rename-home.dto';
+import { AddRoomDTO } from '../models/response-dtos/add-room.dto';
+import { UserDTO as UserDTO } from '../models/response-dtos/user.dto';
+import { DeleteRoomDTO } from '../models/response-dtos/delete-room.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -59,8 +59,8 @@ export class HomeApiService {
       );
   }
 
-  createNewHome(home: CreateHome): Observable<boolean> {
-    if (!home) return of(false);
+  createNewHome(home: CreateHome): Observable<string> {
+    if (!home) return of('');
     const url = 'HomeManagement/Create-NewHome';
     const body = {
       name: home.name,

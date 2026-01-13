@@ -1,1 +1,91 @@
-<p>create-new-home-component works!</p>
+<div class="create-home">
+
+  <div class="home-name">
+    <h4>Home Name</h4>
+    <input type="text" [(ngModel)]="homeName" />
+  </div>
+
+
+  <div class="select-home-location">
+    <h4>Home Location :</h4>
+    <div class="location-card">
+      @if (!homeLocation) {
+      <div class="location-empty">No location selected yet.</div>
+      } @else {
+      <div class="location-grid">
+        <div class="location-item">
+          <span class="k">Lat</span>
+          <span class="v">{{ homeLocation.lat }}</span>
+        </div>
+        <div class="location-item">
+          <span class="k">Lng</span>
+          <span class="v">{{ homeLocation.lng }}</span>
+        </div>
+
+        @if (homeAddress) {
+        <div class="location-item wide">
+          <span class="k">Address</span>
+          <span class="v">
+            {{ homeName  || "-" +","}} {{ homeAddress.house_number || "-"  +","}} {{ homeAddress.road || "-"  }}
+          </span>
+        </div>
+
+        <div class="location-item">
+          <span class="k">City</span>
+          <span class="v">{{ homeAddress.village || '-' }}</span>
+        </div>
+
+        <div class="location-item">
+          <span class="k">State</span>
+          <span class="v">{{ homeAddress.state || '-' }}</span>
+        </div>
+
+        <div class="location-item">
+          <span class="k">Country</span>
+          <span class="v">{{ homeAddress.country || '-' }}</span>
+        </div>
+
+        <div class="location-item">
+          <span class="k">Postcode</span>
+          <span class="v">{{ homeAddress.postcode || '-' }}</span>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <button class="btn btn-primary" (click)="ChooseMyCurrentLocation()" [disabled]="!initialCenter">My
+      current
+      location</button>
+    <button class="btn btn-primary" (click)="openModal()" [disabled]="!mapReady">Open Map</button>
+
+    <div class="modal fade" [class.show]="isModalOpen" [class.d-block]="isModalOpen"
+      [style.display]="isModalOpen ? 'block' : 'none'" tabindex="-1">
+
+      <div class="modal-dialog">
+        <div class="modal-content">
+          @if (isModalOpen && initialCenter) {
+          <app-map-location-picker-component [initialCenter]="initialCenter" (confirmed)="locationSelected($event) "
+            (closed)="closeModal()">
+          </app-map-location-picker-component>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="submit-creation">
+    <div class="submit-creation">
+      <button mat-raised-button color="primary" class="create-btn" routerLink="/">
+        <span>Cancel</span>
+      </button>
+      <button mat-raised-button color="primary" class="create-btn" (click)="createHome()"
+        [disabled]="!homeName || !homeLocation">
+        <span>Create Home</span>
+      </button>
+    </div>
+  </div>
+
+
+</div>
