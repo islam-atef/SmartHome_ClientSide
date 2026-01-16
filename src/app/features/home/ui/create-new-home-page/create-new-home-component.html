@@ -1,10 +1,12 @@
 <div class="create-home">
 
   <div class="home-name">
-    <h4>Home Name</h4>
-    <input type="text" [(ngModel)]="homeName" />
+    <h4>Home Information</h4>
+    <label for="homeName"> Home Name :</label>
+    <input name="homeName" id="homeName" type="text" [(ngModel)]="homeName" />
+    <label for="homeInfo"> Home Information :</label>
+    <input name="homeInfo" id="homeInfo" type="text" [(ngModel)]="homeInfo" />
   </div>
-
 
   <div class="select-home-location">
     <h4>Home Location :</h4>
@@ -13,15 +15,6 @@
       <div class="location-empty">No location selected yet.</div>
       } @else {
       <div class="location-grid">
-        <div class="location-item">
-          <span class="k">Lat</span>
-          <span class="v">{{ homeLocation.lat }}</span>
-        </div>
-        <div class="location-item">
-          <span class="k">Lng</span>
-          <span class="v">{{ homeLocation.lng }}</span>
-        </div>
-
         @if (homeAddress) {
         <div class="location-item wide">
           <span class="k">Address</span>
@@ -61,7 +54,6 @@
 
     <div class="modal fade" [class.show]="isModalOpen" [class.d-block]="isModalOpen"
       [style.display]="isModalOpen ? 'block' : 'none'" tabindex="-1">
-
       <div class="modal-dialog">
         <div class="modal-content">
           @if (isModalOpen && initialCenter) {
@@ -72,8 +64,8 @@
         </div>
       </div>
     </div>
-  </div>
 
+  </div>
 
   <div class="submit-creation">
     <div class="submit-creation">
@@ -86,6 +78,5 @@
       </button>
     </div>
   </div>
-
 
 </div>

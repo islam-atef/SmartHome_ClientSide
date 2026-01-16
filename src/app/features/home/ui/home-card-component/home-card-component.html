@@ -2,9 +2,16 @@
   <div class="home-card__bg" aria-hidden="true"></div>
 
   <div class="home-card__content">
+    @if(userIn){
+    @if(isOwner){
+    <mat-icon class="home-card__owner">person</mat-icon>
+    }
+    <mat-icon class="home-card__userin">home</mat-icon>
+    }
     <div class="home-card__title">{{homeName}}</div>
     @if(homeExists){
-    <div class="home-card__sub">Tap to open</div>
+    <div class="home-card__sub">{{home.homeInfo}}</div>
+    <div class="home-card__sub">{{home.address}}</div>
     }@else{
     <div class="home-card__sub">Tap to Create New Home</div>
     }

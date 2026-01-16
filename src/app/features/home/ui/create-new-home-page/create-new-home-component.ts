@@ -30,6 +30,7 @@ export class CreateNewHomeComponent implements OnInit {
   homeAddress!: AddressModel;
   isModalOpen = false;
   homeName!: string;
+  homeInfo: string | null = null;
   mapReady = false;
 
   constructor(
@@ -134,11 +135,16 @@ export class CreateNewHomeComponent implements OnInit {
           latitude: this.homeLocation.lat,
           longitude: this.homeLocation.lng,
           homeName: this.homeName,
+          homeInfo: this.homeInfo,
           ISO3166_2_lvl4: this.homeAddress.ISO3166_2_lvl4,
           country: this.homeAddress.country,
           state: this.homeAddress.state,
-          road: this.homeAddress.road,
-          house_number: this.homeAddress.house_number,
+          address:
+            this.homeAddress.village +
+            ',' +
+            this.homeAddress.road +
+            ',' +
+            this.homeAddress.house_number,
         };
         const res = this.homeFacade.createNewHome(home);
         console.log(

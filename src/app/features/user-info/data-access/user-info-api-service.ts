@@ -9,7 +9,7 @@ import { UserHomeSubscriptionRequestDTO } from '../models/user-home-subRequest.d
   providedIn: 'root',
 })
 export class UserInfoApiService {
-  constructor(private apiHttp: ApiHttpService) {}
+  constructor(private apiHttp: ApiHttpService) { }
 
   getUserInfo(): Observable<UserGeneralInfoDTO | null> {
     const url = 'UserInfo/Get-Info';

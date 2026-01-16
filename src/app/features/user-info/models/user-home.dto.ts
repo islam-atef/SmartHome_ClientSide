@@ -1,6 +1,11 @@
 export class UserHomeDTO {
-  HomeId: string = '';
-  HomeName: string = '';
-  Longitude: number = 0;
-  Latitude: number = 0;
+  homeId: string = '';
+  isOwner: boolean = false;
+  homeName: string = '';
+  homeInfo: string = '';
+  longitude: number = 0;
+  latitude: number = 0;
+  country: string = '';
+  state: string = '';
+  address: string = '';
 }

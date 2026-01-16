@@ -21,11 +21,12 @@ export class MainComponent implements OnInit {
   userName!: string;
   userImage!: string;
   userHomes!: UserHomeDTO[];
+  searchHomes: UserHomeDTO[] = [];
 
   constructor(
     private userInfoFacade: UserInfoFacadeService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.getInitialData();
   }

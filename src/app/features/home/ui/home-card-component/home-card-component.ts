@@ -21,25 +21,29 @@ export class HomeCardComponent implements OnInit {
   private _router = inject(Router);
 
   @Input() home: UserHomeDTO = new UserHomeDTO();
+  @Input() userIn: boolean = false;
+  @Input() isOwner: boolean = false;
 
   homeExists: boolean = false;
-  homeName = '';
+  homeName: string = '';
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    if (this.home.HomeId) {
+    if (this.home.homeId) {
       this.homeExists = true;
-      this.homeName = this.home.HomeName;
+      this.homeName = this.home.homeName;
     } else {
       this.homeExists = false;
+      this.userIn = false;
+      this.isOwner = false;
       this.homeName = 'Add New Home';
     }
     this.cdr.detectChanges();
   }
 
   gotoHome() {
-    this._router.navigate(['/home', this.home.HomeId]);
+    this._router.navigate(['/home', this.home.homeId]);
   }
 
   NewHome() {

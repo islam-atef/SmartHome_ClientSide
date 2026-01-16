@@ -12,7 +12,7 @@
 
   transition: transform .15s ease, box-shadow .15s ease;
 
-  background: #ffffff;
+  background: #d4e9fc00;
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
@@ -20,6 +20,22 @@
 .home-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 22px rgba(0, 0, 0, .16);
+}
+
+.home-card__userin {
+  margin-top: -30px;
+  margin-left: -10px;
+  color: #30b157b4;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.home-card__owner {
+  margin-top: -30px;
+  margin-left: -10px;
+  color: #c7aa04b4;
+  margin-bottom: 20px;
+  font-size: 18px;
 }
 
 .home-card__bg {

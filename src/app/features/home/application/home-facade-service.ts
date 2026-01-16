@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HomeApiService } from '../data-access/home-api-service';
 import { HomeDataDTO } from '../models/response-dtos/home-data.dto';
 import { HomeSubscriptionRequestDTO } from '../models/response-dtos/home-subscription-request.dto';
-import { CreateHome } from '../models/response-dtos/create-home.dto';
 import { AddRoomDTO } from '../models/response-dtos/add-room.dto';
 import { DeleteRoomDTO } from '../models/response-dtos/delete-room.dto';
 import { UserDTO } from '../models/response-dtos/user.dto';
@@ -12,7 +11,7 @@ import { AddHomeDto } from '../models/request-dtos/add-home-dto';
   providedIn: 'root',
 })
 export class HomeFacadeService {
-  constructor(private homeApi: HomeApiService) {}
+  constructor(private homeApi: HomeApiService) { }
 
   getHomeData(homeId: string): HomeDataDTO {
     this.homeApi.getHomeData(homeId).subscribe({
@@ -57,10 +56,15 @@ export class HomeFacadeService {
   }
 
   createNewHome(homeData: AddHomeDto): string {
-    const home: CreateHome = {
-      name: homeData.homeName,
+    const home: AddHomeDto = {
+      homeName: homeData.homeName,
+      homeInfo: homeData.homeInfo,
       longitude: homeData.longitude,
       latitude: homeData.latitude,
+      ISO3166_2_lvl4: homeData.ISO3166_2_lvl4,
+      country: homeData.country,
+      state: homeData.state,
+      address: homeData.address
     };
     this.homeApi.createNewHome(home).subscribe({
       next: (res: string) => {

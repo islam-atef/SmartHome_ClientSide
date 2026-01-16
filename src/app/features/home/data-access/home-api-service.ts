@@ -3,17 +3,17 @@ import { ApiHttpService } from '../../../core/http/api-http.service';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { HomeDataDTO } from '../models/response-dtos/home-data.dto';
 import { HomeSubscriptionRequestDTO } from '../models/response-dtos/home-subscription-request.dto';
-import { CreateHome } from '../models/response-dtos/create-home.dto';
 import { RenameHomeDto } from '../models/response-dtos/rename-home.dto';
 import { AddRoomDTO } from '../models/response-dtos/add-room.dto';
 import { UserDTO as UserDTO } from '../models/response-dtos/user.dto';
 import { DeleteRoomDTO } from '../models/response-dtos/delete-room.dto';
+import { AddHomeDto } from '../models/request-dtos/add-home-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HomeApiService {
-  constructor(private apiHttp: ApiHttpService) {}
+  constructor(private apiHttp: ApiHttpService) { }
 
   getHomeData(homeId: string): Observable<HomeDataDTO | null> {
     if (!homeId) return of(null);
@@ -59,13 +59,18 @@ export class HomeApiService {
       );
   }
 
-  createNewHome(home: CreateHome): Observable<string> {
+  createNewHome(home: AddHomeDto): Observable<string> {
     if (!home) return of('');
     const url = 'HomeManagement/Create-NewHome';
     const body = {
-      name: home.name,
+      name: home.homeName,
+      homeInfo: home.homeInfo,
       longitude: home.longitude,
       latitude: home.latitude,
+      ISO3166_2_lvl4: home.ISO3166_2_lvl4,
+      country: home.country,
+      state: home.state,
+      address: home.address
     };
     return this.apiHttp.post<boolean>(url, body).pipe(
       map((res) => res ?? false),
