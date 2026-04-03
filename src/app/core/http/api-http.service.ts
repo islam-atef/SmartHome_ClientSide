@@ -62,6 +62,7 @@ export class ApiHttpService {
     options?: {
       params?: HttpParams | { [key: string]: any };
       headers?: HttpHeaders | { [key: string]: string };
+      body?: any;
     }
   ) {
     return this.http.delete<T>(this.buildUrl(url), options);

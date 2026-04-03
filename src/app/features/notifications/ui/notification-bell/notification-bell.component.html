@@ -1,0 +1,15 @@
+<div class="notification-bell">
+    @if(unreadCount() > 0){
+    <mat-icon matBadge="{{unreadCount()}}" matBadgeColor="warn" (click)="openNotifications()"
+        [matTooltip]="'You have ' + unreadCount() + ' unread notification' + (unreadCount() > 1 ? 's' : '')"
+        matTooltipClass="header-tooltip" matTooltipPosition="below" class="notification-bell-icon">
+        notification_important
+    </mat-icon>
+    }
+    @else {
+    <mat-icon (click)="openNotifications()" matTooltip="No new notifications" matTooltipClass="header-tooltip"
+        matTooltipPosition="below" class="notification-bell-icon">
+        notifications
+    </mat-icon>
+    }
+</div>

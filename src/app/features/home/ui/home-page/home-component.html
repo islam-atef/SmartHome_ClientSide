@@ -1,1 +1,132 @@
-<p>home-component works!</p>
+<section class="home-page">
+
+    <header class="home-header">
+
+        <div class="home-header__card">
+
+            <div class="home-header__left">
+
+                <div class="home-data">
+
+                    <div class="home-info">
+                        <span class="home-info_name"> Name: {{homeData?.homeName}} </span>
+                        <span class="home-info_info"> Info: {{homeData?.homeInfo}} </span>
+                    </div>
+
+
+                    <div class="home_owner">
+                        <span class="home_owner_name"> Owner Name: {{homeData?.ownerName}} </span>
+                        <span class="home_owner_email"> Owner Email: {{homeData?.ownerEmail}} </span>
+                    </div>
+
+
+                    <div class="home_address">
+                        <span class="home_address_country"> Country: {{homeData?.country}} </span>
+                        <span class="home_address_state"> State: {{homeData?.state}} </span>
+                        <span class="home_address_address"> Address: {{homeData?.address}} </span>
+                    </div>
+
+                    @if(isUserIn){
+                    <div class="home-stats">
+                        <span class="home-stats_rooms"> Rooms: {{homeData?.homeRooms?.length ?? 0}} </span>
+                        @if(isOwner){
+                        <span class="home-stats_users"> Users: {{homeData?.homeUsers?.length ?? 0}} </span>
+                        }
+                    </div>
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="home-header__actions">
+                <app-notification-bell class="notification-bell"></app-notification-bell>
+                <button mat-icon-button (click)="refreshData()" matTooltip="Refresh Data"
+                    matTooltipClass="header-tooltip" matTooltipPosition="below">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <button mat-icon-button routerLink="/" matTooltip="Back to Homes" matTooltipClass="header-tooltip"
+                    matTooltipPosition="below">
+                    <mat-icon>home</mat-icon>
+                </button>
+            </div>
+
+        </div>
+
+    </header>
+
+    @if(isUserIn){
+    <main class="home-content">
+
+        <mat-tab-group class="home-tabs">
+
+            <mat-tab label="Home Rooms">
+                <div class="tab-card">
+                    <app-home-room-component [rooms]="homeData?.homeRooms ?? []" [isOwner]="isOwner"
+                        [homeId]="homeData?.homeId ?? ''"
+                        (roomsNotification)="handleRoomsNotification($event)"></app-home-room-component>
+                </div>
+            </mat-tab>
+
+
+            <mat-tab label="Home User">
+                <div class="tab-card">
+                    <app-home-user-component [users]="homeData?.homeUsers ?? []" [isOwner]="isOwner"
+                        [homeId]="homeData?.homeId ?? ''" (usersNotification)="handleUsersNotification($event)"
+                        [ownerEmail]="homeData?.ownerEmail ?? ''"></app-home-user-component>
+                </div>
+            </mat-tab>
+
+            @if(isOwner){
+            <mat-tab label="Home Administration">
+                <div class="tab-card">
+                    <app-home-admin-component [homeId]="homeData?.homeId ?? ''"
+                        (adminNotification)="handleAdminNotification($event)"></app-home-admin-component>
+                </div>
+            </mat-tab>
+            }
+
+        </mat-tab-group>
+
+    </main>
+    }@else{
+    @if(userInvitationId !== '')
+    {
+    <main class="home-invitation">
+        <div class="home-invitation-card">
+            <div class="home-invitation-card-header">
+                <h2>You are invited to this home</h2>
+            </div>
+            <div class="home-invitation-card-body">
+                <button mat-raised-button color="primary" (click)="acceptInvitation()">Accept</button>
+                <button mat-raised-button color="primary" (click)="rejectInvitation()">Reject</button>
+            </div>
+        </div>
+    </main>
+    }@else if(subscriptionId === ''){
+    <main class="home-subscription">
+        <div class="home-subscription-card">
+            <div class="home-subscription-card-header">
+                <h2>Subscribe to this home</h2>
+            </div>
+            <div class="home-subscription-card-body">
+                <button mat-raised-button color="primary" (click)="subscribeToHome()">Subscribe</button>
+            </div>
+        </div>
+    </main>
+    }@else{
+    <main class="home-subscription">
+        <div class="home-subscription-card">
+            <div class="home-subscription-card-header">
+                <h2>Subscribe to this home</h2>
+            </div>
+            <div class="home-subscription-card-body">
+                <span>You are already Subscribed to this home</span>
+                <button mat-raised-button color="primary" (click)="unsubscribeFromHome()">Unsubscribe</button>
+            </div>
+        </div>
+    </main>
+    }
+    }
+
+</section>

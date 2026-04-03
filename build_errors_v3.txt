@@ -1,0 +1,82 @@
+﻿
+> smart-home-client-side@0.0.0 build
+> ng build
+
+node.exe : [1m[33m[baseline-browser-mapping] The 
+data in this module is over two months old.  To 
+ensure accurate Baseline data, please update: `npm i 
+baseline-browser-mapping@latest -D`[39m[22m
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([1m[3 
+   3m[basel...t -D`[39m[22m:String) [], RemoteExc  
+  eption
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[33mΓ¥»[39m Building...
+[32mΓ£ö[39m Building...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                            [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-OUMUP3JQ.js[39m  [2m | [22m[2m-[22m                                [2m | [22m[36m298.61 kB[39m[2m | [22m               [36m81.30 kB[39m
+[32mstyles-ZMOLLSWP.css[39m[2m | [22m[2mstyles[22m                           [2m | [22m[36m250.20 kB[39m[2m | [22m               [36m25.87 kB[39m
+[32mscripts-TTWY4XDY.js[39m[2m | [22m[2mscripts[22m                          [2m | [22m [36m80.45 kB[39m[2m | [22m               [36m21.60 kB[39m
+[32mchunk-PW4DWRJ4.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m65.89 kB[39m[2m | [22m               [36m14.42 kB[39m
+[32mchunk-EZMIUJKA.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m53.31 kB[39m[2m | [22m               [36m13.51 kB[39m
+[32mchunk-BBMTKKBN.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m36.14 kB[39m[2m | [22m                [36m5.00 kB[39m
+[32mchunk-CLPTFK5U.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m34.22 kB[39m[2m | [22m                [36m8.29 kB[39m
+[32mchunk-SSXSTIMS.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m23.75 kB[39m[2m | [22m                [36m6.51 kB[39m
+[32mmain-YS3OVOTL.js[39m   [2m | [22m[2mmain[22m                             [2m | [22m [36m23.54 kB[39m[2m | [22m                [36m6.58 kB[39m
+[32mchunk-26JS6DHJ.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m13.50 kB[39m[2m | [22m                [36m3.15 kB[39m
+[32mchunk-453CZXY4.js[39m  [2m | [22m[2m-[22m                                [2m | [22m  [36m6.68 kB[39m[2m | [22m                [36m1.50 kB[39m
+[32mchunk-LBUMI4TJ.js[39m  [2m | [22m[2m-[22m                                [2m | [22m[36m211 bytes[39m[2m | [22m              [36m211 bytes[39m
+
+[1m [22m                  [2m | [22m[1mInitial total[22m                    [2m | [22m[1m[93m886.51 kB[39m[22m[2m | [22m              [1m187.95 kB[22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                            [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-2ANUHH46.js[39m  [2m | [22m[2mcreate-new-home-component[22m        [2m | [22m[36m166.36 kB[39m[2m | [22m               [36m41.89 kB[39m
+[32mchunk-BFEMQMCG.js[39m  [2m | [22m[2mmain-component[22m                   [2m | [22m[36m160.83 kB[39m[2m | [22m               [36m31.87 kB[39m
+[32mchunk-F3S4VWJR.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m72.66 kB[39m[2m | [22m               [36m12.32 kB[39m
+[32mchunk-L7NMF6GJ.js[39m  [2m | [22m[2mhome-component[22m                   [2m | [22m [36m56.27 kB[39m[2m | [22m               [36m11.71 kB[39m
+[32mchunk-VS4H5WTL.js[39m  [2m | [22m[2mregister-page-component[22m          [2m | [22m [36m44.82 kB[39m[2m | [22m                [36m8.95 kB[39m
+[32mchunk-LC6B2XKE.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m42.58 kB[39m[2m | [22m                [36m9.16 kB[39m
+[32mchunk-N4BA5P7Z.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m41.16 kB[39m[2m | [22m                [36m8.48 kB[39m
+[32mchunk-AE6MRD44.js[39m  [2m | [22m[2maccount-setting-page-component[22m   [2m | [22m [36m14.84 kB[39m[2m | [22m                [36m3.60 kB[39m
+[32mchunk-C5QS3TN7.js[39m  [2m | [22m[2mlogin-page-component[22m             [2m | [22m [36m10.10 kB[39m[2m | [22m                [36m2.86 kB[39m
+[32mchunk-BQKQKOAM.js[39m  [2m | [22m[2m-[22m                                [2m | [22m [36m10.02 kB[39m[2m | [22m                [36m2.86 kB[39m
+[32mchunk-IYJGWDID.js[39m  [2m | [22m[2m-[22m                                [2m | [22m  [36m7.60 kB[39m[2m | [22m                [36m1.17 kB[39m
+[32mchunk-UBLAKWPF.js[39m  [2m | [22m[2m-[22m                                [2m | [22m  [36m6.73 kB[39m[2m | [22m                [36m1.02 kB[39m
+[32mchunk-3CDPR6NN.js[39m  [2m | [22m[2mreset-password-component[22m         [2m | [22m  [36m6.07 kB[39m[2m | [22m                [36m2.04 kB[39m
+[32mchunk-SIONMEYI.js[39m  [2m | [22m[2maccount-activation-page-component[22m[2m | [22m  [36m3.42 kB[39m[2m | [22m                [36m1.24 kB[39m
+[32mchunk-UW4TQS5Q.js[39m  [2m | [22m[2m-[22m                                [2m | [22m  [36m1.44 kB[39m[2m | [22m              [36m548 bytes[39m
+[2m...and 1 more lazy chunks files. Use "--verbose" to show all the files.[22m
+
+Application bundle generation complete. [4.698 seconds] - 2026-02-10T16:13:35.568Z
+
+[1m[33m[33mΓû▓ 
+[43;33m[[43;30mWARNING[43;33m][0m [1mbundle 
+initial exceeded maximum budget. Budget 500.00 kB 
+was not met by 386.51 kB with a total of 886.51 
+kB.[0m
+
+
+[33mΓû▓ [43;33m[[43;30mWARNING[43;33m][0m [1msr
+c/app/features/notifications/ui/notification-list.com
+ponent/notification-list.component.css exceeded 
+maximum budget. Budget 4.00 kB was not met by 1.80 
+kB with a total of 5.80 kB.[0m
+
+
+[33mΓû▓ [43;33m[[43;30mWARNING[43;33m][0m 
+[1mModule 'leaflet' used by 'src/app/features/home/u
+i/create-new-home-page/inner-components/map-location-
+picker-component/map-location-picker-component.ts' 
+is not ESM[0m
+
+  CommonJS or AMD dependencies can cause 
+optimization bailouts.
+  For more information see: [4mhttps://angular.dev/t
+ools/cli/build#configuring-commonjs-dependencies[0m
+
+[39m[22m
+Output location: C:\Users\pc\OneDrive\Documents\GitHub\IOT\SmartHomeFullSystem_Client-Side\SmartHome_ClientSide\dist\SmartHome_ClientSide
+

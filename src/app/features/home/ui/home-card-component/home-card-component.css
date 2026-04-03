@@ -25,16 +25,16 @@
 .home-card__userin {
   margin-top: -30px;
   margin-left: -10px;
-  color: #30b157b4;
+  color: #106b256c;
   margin-bottom: 20px;
   font-size: 18px;
 }
 
 .home-card__owner {
-  margin-top: -30px;
+  margin-top: 2px;
   margin-left: -10px;
-  color: #c7aa04b4;
-  margin-bottom: 20px;
+  color: #3e02a0b4;
+  margin-bottom: 5px;
   font-size: 18px;
 }
 
@@ -65,6 +65,8 @@
 
 .home-card__sub {
   font-size: 13px;
+  white-space: nowrap;
+  overflow-x: auto;
   color: rgba(31, 42, 55, .7);
 }
 

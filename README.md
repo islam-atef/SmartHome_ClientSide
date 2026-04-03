@@ -31,6 +31,8 @@ SmartHome Client-Side is a comprehensive web application that enables users to:
 - Create and configure home rooms
 - Control and monitor smart home devices
 - Manage user account settings
+- Receive real-time notifications for home events
+- Manage notification preferences and history
 
 The application follows modern Angular best practices with a clean architecture pattern, feature-based organization, and comprehensive security measures.
 
@@ -55,7 +57,18 @@ The application follows modern Angular best practices with a clean architecture 
 - **Responsive Design**: Mobile-first approach with Bootstrap 5
 - **Material Design**: Angular Material components for consistent UI
 - **Modern Layout**: Clean, intuitive navigation and layouts
+- **Device Management**: Advanced device control and monitoring
+- **Room Management**: Room-based organization for smart devices
 - **Error Handling**: Comprehensive error pages and user feedback
+
+### Real-time & Notifications
+- **Real-time Updates**: SignalR integration for instant updates across devices
+- **Notification System**: Comprehensive notification center with unread counts and status tracking (`Unread`, `Seen`, `Read`)
+- **Notification Components**: 
+  - `NotificationBell`: Dynamic bell icon with real-time unread count
+  - `NotificationList`: Detailed history with pagination and status filtering
+- **State Management**: Dedicated `NotificationsStore` for efficient handling and real-time state synchronization
+- **Event Source Tracking**: Notifications link directly to source entities (Homes, Invitations, etc.) via `RefType` and `RefId`
 
 ## 🛠 Technology Stack
 
@@ -76,6 +89,7 @@ The application follows modern Angular best practices with a clean architecture 
 
 ### Additional Libraries
 - **UUID**: 13.0.0 (Unique identifier generation)
+- **SignalR**: @microsoft/signalr (Real-time web functionality)
 
 ## 📦 Prerequisites
 
@@ -84,7 +98,7 @@ Before you begin, ensure you have the following installed:
 - **Node.js**: v18.x or higher
 - **npm**: v9.x or higher (comes with Node.js)
 - **Angular CLI**: v20.0.1 or higher
-- **SSL Certificates**: For local HTTPS development (included in `certs/` directory)
+- **SSL Certificates**: Required for local HTTPS development (see [SSL Configuration](#ssl-configuration))
 
 ### Installing Angular CLI
 
@@ -142,6 +156,8 @@ Ensure these certificates exist in the `certs/` directory. If not, generate them
 mkcert -install
 mkcert localhost 127.0.0.1 ::1
 ```
+
+Then ensure your `angular.json` points to the correct certificate paths (default: `certs/localhost+2.pem` and `certs/localhost+2-key.pem`).
 
 ## 💻 Development
 
@@ -253,6 +269,9 @@ SmartHome_ClientSide/
 │   │   │   │   └── tokenStoreService/# Token storage
 │   │   │   ├── browserIdentifier/   # Browser identification
 │   │   │   ├── http/                # HTTP service
+│   │   │   ├── location/            # Location-based services
+│   │   │   ├── realtime/            # Real-time updates (WebSockets/SignalR)
+│   │   │   │   └── signalr/         # SignalR service implementation
 │   │   │   └── utils/               # Utility functions
 │   │   ├── features/                # Feature modules
 │   │   │   ├── auth/                # Authentication feature
@@ -261,11 +280,22 @@ SmartHome_ClientSide/
 │   │   │   │   ├── models/          # DTOs and models
 │   │   │   │   └── ui/              # UI components
 │   │   │   ├── home/                # Home management feature
+│   │   │   ├── devicesManagement/   # Device management feature
+│   │   │   ├── notifications/       # Real-time notifications feature
+│   │   │   │   ├── application/     # Facade services
+│   │   │   │   ├── data-access/     # API services
+│   │   │   │   ├── models/          # DTOs and models
+│   │   │   │   ├── store/           # Notification state management
+│   │   │   │   └── ui/              # UI components
+│   │   │   ├── room/                # Room management feature
 │   │   │   ├── user-info/           # User information feature
 │   │   │   └── not-found/           # 404 page
 │   │   ├── layouts/                 # Layout components
 │   │   │   ├── authentication-layout-component/
 │   │   │   └── main-layout-component/
+│   │   ├── shared/                  # Shared resources
+│   │   │   ├── components/          # Shared UI components
+│   │   │   └── models/              # Shared data models
 │   │   ├── app.ts                   # Root component
 │   │   ├── app.routes.ts            # Route configuration
 │   │   └── app.config.ts            # App configuration
@@ -300,8 +330,11 @@ feature/
 
 - **Facade Services**: Centralize business logic and coordinate between UI and data layers
 - **API Services**: Handle HTTP communication with backend
-- **State Services**: Manage application state (auth, browser ID)
-- **Store Services**: Handle local storage operations
+- **State Services**: Manage application state (auth, browser ID, notifications)
+- **Store Services**: Handle local storage operations or state persistence (`NotificationsStore`)
+- **Real-time Services**: Handle WebSocket connections via SignalR (`SignalRService`)
+  - **Hubs**: `/hubs/notifications` for user-specific real-time events
+  - **Events**: `NotificationReceived`, `UnreadCountUpdated`
 
 ### Design Patterns
 
@@ -362,7 +395,8 @@ this.apiHttp.delete<T>(url, options)
 The application communicates with:
 - **Auth API**: `/api/auth/*`
 - **Device Management API**: `/api/DevicesAuth/*`
-- **Home API**: `/api/home/*` (inferred)
+- **Home API**: `/api/home/*`
+- **Notifications API**: `/api/Notifications/*`
 - **User API**: `/api/user/*` (inferred)
 
 ### Error Handling
@@ -381,7 +415,7 @@ HTTP errors are handled through:
   ├── /Main                 → User dashboard
   ├── /account-settings     → Account settings
   ├── /home/:homeId         → Home details
-  └── /home/new             → Create new home
+  └── /new-home             → Create new home
 
 /authentication             → Auth layout (public)
   ├── /login                → Login page
@@ -496,14 +530,6 @@ fix: resolve token refresh issue
 docs: update README with API info
 refactor: improve auth facade service
 ```
-
-## 📄 License
-
-This project is private and proprietary. All rights reserved.
-
-## 📞 Support
-
-For issues, questions, or contributions, please contact the development team or create an issue in the repository.
 
 ---
 

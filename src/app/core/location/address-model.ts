@@ -1,5 +1,5 @@
 export interface AddressModel {
-  ISO3166_2_lvl4: string;
+  "ISO3166-2-lvl4": string;
   country: string;
   country_code: string;
   house_number: string;

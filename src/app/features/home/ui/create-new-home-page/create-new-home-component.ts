@@ -39,7 +39,7 @@ export class CreateNewHomeComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private location: LocationService,
     private locationHolder: LocationHolderService
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     // get current location
@@ -136,7 +136,7 @@ export class CreateNewHomeComponent implements OnInit {
           longitude: this.homeLocation.lng,
           homeName: this.homeName,
           homeInfo: this.homeInfo,
-          ISO3166_2_lvl4: this.homeAddress.ISO3166_2_lvl4,
+          ISO3166_2_lvl4: this.homeAddress["ISO3166-2-lvl4"],
           country: this.homeAddress.country,
           state: this.homeAddress.state,
           address:
@@ -146,12 +146,13 @@ export class CreateNewHomeComponent implements OnInit {
             ',' +
             this.homeAddress.house_number,
         };
-        const res = this.homeFacade.createNewHome(home);
-        console.log(
-          'CreateNewHomeComponent: createHome: creation returned value:',
-          res
-        );
-        this.router.navigate(['/home', res]);
+        this.homeFacade.createNewHome(home).subscribe((res) => {
+          console.log(
+            'CreateNewHomeComponent: createHome: creation returned value:',
+            res
+          );
+          this.router.navigate(['/home', res]);
+        });
       }
     }, 1000); // 1000 milliseconds = 1 second
   }

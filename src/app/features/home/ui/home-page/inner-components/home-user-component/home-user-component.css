@@ -1,0 +1,89 @@
+.home-user-card {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.home-user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #eef2ff;
+}
+
+.home-user-title {
+    color: #1a237e;
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.home-user-header mat-form-field {
+    flex: 1;
+    min-width: 250px;
+}
+
+.home-user-header button {
+    height: 56px;
+    border-radius: 12px;
+}
+
+.home-user-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.home-user-item {
+    background: white;
+    padding: 24px;
+    border-radius: 20px;
+    border: 1px solid #eef2ff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.home-user-item:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.home-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.home-user-name {
+    font-weight: 700;
+    color: #1a237e;
+    font-size: 1.1rem;
+}
+
+.home-user-email {
+    color: #5c6bc0;
+    font-size: 0.9rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .home-user-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .home-user-list {
+        grid-template-columns: 1fr;
+    }
+
+    .home-user-item {
+        padding: 20px;
+    }
+}

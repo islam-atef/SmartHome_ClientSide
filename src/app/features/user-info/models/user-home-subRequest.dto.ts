@@ -1,4 +1,4 @@
-export class UserHomeSubscriptionRequestDTO {
+export class UserHomeSubscriptionDTO {
   requestId: string = '';
   homeId: string = '';
   homeName: string = '';

@@ -8,4 +8,6 @@ export class UserHomeDTO {
   country: string = '';
   state: string = '';
   address: string = '';
+
+  objectType: string = 'UserHomeDTO';
 }

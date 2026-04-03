@@ -1,0 +1,213 @@
+.home-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8faff 0%, #eef2ff 100%);
+}
+
+.home-header {
+    width: 100%;
+}
+
+.home-header__card {
+    background: rgba(255, 255, 255, 0.7);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.icons {
+    display: flex;
+    gap: 12px;
+}
+
+.home-header__left {
+    flex: 1;
+    min-width: 300px;
+}
+
+.home-data {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.home-info,
+.home_owner,
+.home_address {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.home-info_name {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1a237e;
+    letter-spacing: -0.5px;
+}
+
+.home-info_info {
+    font-size: 1rem;
+    color: #5c6bc0;
+    font-style: italic;
+}
+
+.home_owner_name,
+.home_address_country {
+    font-weight: 600;
+    color: #283593;
+}
+
+.home_owner_email,
+.home_address_state,
+.home_address_address {
+    font-size: 0.9rem;
+    color: #7986cb;
+}
+
+.home-stats {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.home-stats_rooms,
+.home-stats_users {
+    background: var(--primary);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 12px rgba(156, 165, 192, 0.3);
+}
+
+.home-header__actions {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    gap: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: pointer;
+}
+
+.home-header__actions mat-icon,
+.home-header__actions ::ng-deep mat-icon {
+    color: #045fceb6 !important;
+}
+
+/* Hover Effects */
+.home-header__actions button:hover mat-icon,
+.notification-bell:hover ::ng-deep mat-icon {
+    color: #162536a9 !important;
+    transform: scale(1.1) rotate(20deg) !important;
+    display: inline-block;
+}
+
+/* Active/Click Effect */
+.home-header__actions mat-icon:active {
+    transform: scale(0.95);
+}
+
+/* Custom Tooltip Styling */
+::ng-deep .header-tooltip {
+    background: rgba(91, 156, 236, 0.644) !important;
+    color: white !important;
+    font-size: 10px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    padding: 8px 12px !important;
+}
+
+/* Specific surface targeting for Material MDC */
+::ng-deep .mat-mdc-tooltip.header-tooltip .mdc-tooltip__surface {
+    background: rgba(91, 156, 236, 0.644) !important;
+    border-radius: 10px !important;
+}
+
+
+.home-content {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+}
+
+.home-tabs {
+    padding: 0;
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper {
+    padding: 24px;
+}
+
+.tab-card {
+    padding: 10px 0;
+}
+
+/* Subscription View */
+.home-subscription {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.home-subscription-card {
+    background: white;
+    padding: 48px;
+    border-radius: 32px;
+    text-align: center;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.home-subscription-card h2 {
+    color: #1a237e;
+    margin-bottom: 24px;
+    font-weight: 700;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .home-page {
+        padding: 12px;
+    }
+
+    .home-header__card {
+        padding: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .home-header__actions {
+        width: 100%;
+    }
+
+    .home-header__actions button {
+        width: 100%;
+    }
+
+    .home-info_name {
+        font-size: 1.5rem;
+    }
+
+    .home-stats {
+        flex-wrap: wrap;
+    }
+}

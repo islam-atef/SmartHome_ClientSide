@@ -29,6 +29,6 @@ export class AuthStateService {
 
   get isRefreshTokenValid(): boolean {
     const tokens = this.tokensSubject.value;
-    return !!tokens?.refreshToken && tokens.expiresAtUtc > new Date();
+    return !!tokens?.refreshToken && tokens.accessTokenExpiresAtUtc > new Date();
   }
 }

@@ -1,0 +1,84 @@
+/* Notification Bell Container */
+.notification-bell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+
+}
+
+/* Material Icon Styling */
+.notification-bell mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: #2969b88a;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: pointer;
+}
+
+/* Hover Effects */
+.notification-bell mat-icon:hover {
+    color: #1f4370a9;
+    transform: scale(1.1) rotate(15deg);
+}
+
+/* Active/Click Effect */
+.notification-bell mat-icon:active {
+    transform: scale(0.95);
+}
+
+/* Badge Customization */
+.notification-bell ::ng-deep .mat-badge-content {
+    background: linear-gradient(135deg, #ff5252, #ff1744);
+    color: white;
+    font-weight: 700;
+    font-size: 11px;
+    min-width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(255, 23, 68, 0.4);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Badge Pulse Animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(255, 23, 68, 0.4);
+    }
+
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(255, 23, 68, 0.6);
+    }
+}
+
+/* Notification Icon with Badge - Extra Emphasis */
+.notification-bell ::ng-deep .mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
+    right: -8px;
+    top: -8px;
+}
+
+/* Tooltip Customization */
+.notification-bell ::ng-deep .mat-tooltip {
+    background: rgba(133, 174, 224, 0.95);
+    color: white;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .notification-bell mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+    }
+}

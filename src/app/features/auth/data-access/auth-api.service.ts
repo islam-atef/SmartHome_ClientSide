@@ -14,7 +14,7 @@ import { AccountActivationDto } from '../models/account-activation.dto';
   providedIn: 'root',
 })
 export class AuthApiService {
-  constructor(private apiHttp: ApiHttpService) {}
+  constructor(private apiHttp: ApiHttpService) { }
 
   //#region: Authentication methods
   /**
@@ -58,10 +58,10 @@ export class AuthApiService {
       map((res) =>
         res != null
           ? ({
-              accessToken: res.accessToken,
-              refreshToken: res.refreshToken,
-              expiresAtUtc: res.expiresAtUtc,
-            } as AuthTokenModel)
+            accessToken: res.accessToken,
+            refreshToken: res.refreshToken,
+            accessTokenExpiresAtUtc: res.accessTokenExpiresAtUtc,
+          } as AuthTokenModel)
           : null
       )
     );
@@ -201,10 +201,10 @@ export class AuthApiService {
       map((res) =>
         res != null
           ? ({
-              accessToken: res.accessToken,
-              refreshToken: res.refreshToken,
-              expiresAtUtc: res.expiresAtUtc,
-            } as AuthTokenModel)
+            accessToken: res.accessToken,
+            refreshToken: res.refreshToken,
+            accessTokenExpiresAtUtc: res.accessTokenExpiresAtUtc,
+          } as AuthTokenModel)
           : null
       )
     );

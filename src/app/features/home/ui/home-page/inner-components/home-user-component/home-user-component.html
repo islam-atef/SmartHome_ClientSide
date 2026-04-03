@@ -1,0 +1,66 @@
+@if(isOwner){
+<div class="home-user-card">
+    <div class="home-user-header">
+        <h3 class="home-user-title">Home Users</h3>
+        <mat-form-field>
+            <mat-label for="userEmail">User Email</mat-label>
+            <input matInput [(ngModel)]="userEmail" placeholder="Enter user email" id="userEmail" name="userEmail"
+                #emailInput="ngModel" required email>
+            <button mat-raised-button color="primary" (click)="inviteUser()" [disabled]="emailInput.invalid">Invite
+                New User <mat-icon>person_add</mat-icon></button>
+        </mat-form-field>
+    </div>
+    <div class="home-user-list">
+        @for(user of users; track user.userEmail){
+        <div class="home-user-item">
+            <div class="home-user-info">
+                <span class="home-user-name">{{user.userName}}</span>
+                <span class="home-user-email">{{user.userEmail}}</span>
+            </div>
+            @if(user.userEmail !== ownerEmail){
+            <div class="home-user-actions">
+                <button mat-icon-button color="primary" (click)="removeUser(user.userEmail)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+            }@else{
+            <div class="home-user-actions">
+                <mat-icon color="primary">star</mat-icon>
+            </div>
+            }
+        </div>
+        }
+        @empty {
+        <div class="home-user-item">
+            <div class="home-user-info">
+                <span class="home-user-name">No users</span>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+}
+@else {
+<div class="home-user-card">
+    <div class="home-user-header">
+        <h3 class="home-user-title">Home Users</h3>
+    </div>
+    <div class="home-user-list">
+        @for(user of users; track user.userEmail){
+        <div class="home-user-item">
+            <div class="home-user-info">
+                <span class="home-user-name">{{user.userName}}</span>
+                <span class="home-user-email">{{user.userEmail}}</span>
+            </div>
+        </div>
+        }
+        @empty {
+        <div class="home-user-item">
+            <div class="home-user-info">
+                <span class="home-user-name">No users</span>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+}

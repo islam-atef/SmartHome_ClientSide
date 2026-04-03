@@ -36,7 +36,7 @@ export class AuthFacadeService {
     private tokenStore: TokenStoreService,
     private browserIdStore: BrowserIdStoreService,
     private router: Router
-  ) {}
+  ) { }
 
   //#region: Authentication Initialization from Local Storage method
   initFromLocalStorage() {
@@ -395,7 +395,7 @@ export class AuthFacadeService {
     const tokens: AuthTokenModel = {
       accessToken: res.accessToken!,
       refreshToken: res.refreshToken!,
-      expiresAtUtc: res.expiresAtUtc!,
+      accessTokenExpiresAtUtc: res.accessTokenExpiresAtUtc!,
     };
     console.log('AuthFacadeService: applyTokens: applying tokens:', tokens);
     this.tokenStore.saveTokens(tokens);

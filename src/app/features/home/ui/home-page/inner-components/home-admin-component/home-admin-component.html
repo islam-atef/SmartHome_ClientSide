@@ -1,0 +1,105 @@
+<div class="admin-component">
+    <div class="admin-component-header">
+        <h2>Home Admin Dashboard</h2>
+    </div>
+    <div class="admin-component-body">
+
+        <div class="admin-component-body-top">
+            <div class="home-management-actions">
+                <div class="home-management-actions__rename">
+                    <mat-form-field>
+                        <mat-label>Home Name</mat-label>
+                        <input matInput type="text" placeholder="Home Name" #homeNameInput required />
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="renameHome(homeNameInput.value)"
+                        [disabled]="homeNameInput.value === ''">Rename
+                        Home</button>
+                </div>
+                <div class="home-management-actions__delete">
+                    <button mat-raised-button color="warn" (click)="deleteHome()">Delete Home
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-component-body-bottom">
+
+            <div class="admin-component-body-bottom-left">
+                <mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
+                    <!-- This is the tree node template for leaf nodes -->
+                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                        <!-- use a disabled button to provide padding for tree leaf -->
+                        <a mat-button (click)="handleNodeAction(node)">{{node.name}}</a>
+                    </mat-tree-node>
+                    <!-- This is the tree node template for expandable nodes -->
+                    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodeToggle
+                        [cdkTreeNodeTypeaheadLabel]="node.name">
+                        <button matIconButton matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                            <mat-icon class="mat-icon-rtl-mirror">
+                                {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                            </mat-icon>
+                        </button>
+                        <div class="node-action">{{node.name}}</div>
+                    </mat-tree-node>
+                </mat-tree>
+            </div>
+
+            <div class="admin-component-body-bottom-right">
+                <!-- display data here -->
+                <div class="admin-component-body-bottom-right-header text-center">
+                    <h5 class="w-full">{{selectedNodeName}} {{dataSourceSelectionKind}} Requests</h5>
+                </div>
+                @for(item of dataSourceSelection; track $index){
+                <div class="admin-component-body-bottom-right-item">
+                    @if(dataSourceSelectionKind === 'subscription'){
+                    <div class="admin-component-body-bottom-right-item-data">
+                        <div class="admin-component-body-bottom-right-item-name">
+                            {{item.userName}}
+                        </div>
+                        <div class="admin-component-body-bottom-right-item-email">
+                            {{item.userEmail}}
+                        </div>
+                        <div class="admin-component-body-bottom-right-item-date">
+                            {{item.requestDate | date}}
+                        </div>
+                    </div>
+                    @if(item.requestState === 0){
+                    <div class="admin-component-body-bottom-right-item-action">
+                        <button mat-raised-button color="primary" (click)="acceptSubscription(item)">Accept</button>
+                        <button mat-raised-button color="warn" (click)="rejectSubscription(item)">Reject</button>
+                    </div>
+                    }
+                    }
+
+                    @if(dataSourceSelectionKind === 'invitation'){
+                    <div class="admin-component-body-bottom-right-item__data">
+                        <div class="admin-component-body-bottom-right-item-name">
+                            {{item.ownerName}}
+                        </div>
+                        <div class="admin-component-body-bottom-right-item-email">
+                            {{item.ownerEmail}}
+                        </div>
+                        <div class="admin-component-body-bottom-right-item-status">
+                            State: {{item.invitationDate | date}}
+                        </div>
+                    </div>
+                    @if(item.invitaionState === 0){
+                    <div class="admin-component-body-bottom-right-item-action">
+                        <button mat-raised-button color="warn" (click)="deleteInvitation(item)">Delete</button>
+                    </div>
+                    }
+                    }
+                </div>
+                }
+                @empty{
+                <div class="admin-component-body-bottom-right-empty">
+                    No data
+                </div>
+                }
+            </div>
+
+        </div>
+
+    </div>
+</div>

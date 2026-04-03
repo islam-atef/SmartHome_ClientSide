@@ -1,0 +1,33 @@
+<div class="home-room">
+    @if (isOwner) {
+    <div class="home-room__form">
+        <mat-form-field>
+            <input matInput [(ngModel)]="roomName" placeholder="Enter room name" id="roomName" name="roomName"
+                #roomInput="ngModel" required>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="addRoomToHome(roomName)" [disabled]="roomInput.invalid">Add
+            Room</button>
+    </div>
+    }
+    <div class="home-room__list">
+        @for (room of rooms; track $index) {
+        <div class="home-room-item">
+            <div class="home-room-info">
+                <a [routerLink]="['/home', homeId, 'room', room.roomId]" routerLinkActive="active"><span
+                        class="home-room-name">{{room.roomName}}</span></a>
+            </div>
+            <div class="home-room-actions">
+                <button mat-icon-button color="primary" (click)="removeRoom(room.roomId)">
+                    Remove Room <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+        }@empty {
+        <div class="home-room-item">
+            <div class="home-room-info">
+                <span class="home-room-name">No rooms</span>
+            </div>
+        </div>
+        }
+    </div>
+</div>

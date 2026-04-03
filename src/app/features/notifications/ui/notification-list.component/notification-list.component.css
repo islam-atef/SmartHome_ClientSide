@@ -1,0 +1,405 @@
+/* ==================== Dialog Container ==================== */
+.notification-dialog {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* ==================== Dialog Title ==================== */
+.notification-dialog-header {
+    display: grid;
+    grid-template-rows: auto;
+
+    margin: 0;
+    padding: 10px 14px 10px 14px;
+    background: linear-gradient(135deg, var(--primary), #d1d6e7);
+    color: white;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 4px 12px rgba(156, 165, 192, 0.25);
+    height: fit-content;
+
+    .notification-title {
+        justify-content: center;
+        font-size: 25px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-section {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        align-items: center;
+        border-color: #f3f4f7;
+        justify-content: center;
+        align-items: baseline;
+
+        .filter-button {
+            border-color: #707279;
+        }
+
+        .filter-label {
+            color: white !important;
+            font-size: 14px;
+            font-weight: 300;
+        }
+    }
+}
+
+
+
+/* ==================== Filter Field ==================== */
+.filter-field {
+    width: 100px;
+    height: 60px;
+    align-items: center;
+    display: flex;
+
+}
+
+.filter-label {
+    color: white !important;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.filter-field ::ng-deep .mat-mdc-form-field-flex {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 4px 8px;
+}
+
+.filter-field ::ng-deep .mat-mdc-text-field-wrapper {
+    padding: 0;
+}
+
+.filter-field ::ng-deep .mdc-notched-outline {
+    display: none;
+}
+
+.filter-field ::ng-deep .mat-mdc-select-value,
+.filter-field ::ng-deep .mat-mdc-form-field-label {
+    color: white !important;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.filter-field ::ng-deep .mat-mdc-select-arrow {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ==================== Dialog Content ==================== */
+.notification-dialog mat-dialog-content {
+    padding: 0;
+    margin: 0;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: #f8f9fc;
+}
+
+/* Firefox scrollbar styling (progressive enhancement) */
+@supports (scrollbar-width: thin) {
+    .notification-dialog mat-dialog-content {
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) #e8eaf0;
+    }
+}
+
+/* Custom Scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+.notification-dialog mat-dialog-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-dialog mat-dialog-content::-webkit-scrollbar-track {
+    background: #e8eaf0;
+}
+
+.notification-dialog mat-dialog-content::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.notification-dialog mat-dialog-content::-webkit-scrollbar-thumb:hover {
+    background: #8891a9;
+}
+
+/* ==================== Notification Container ==================== */
+.notification-container {
+    padding: 16px;
+}
+
+/* ==================== Empty State ==================== */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: #9ca5c0;
+}
+
+.empty-state mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    opacity: 0.7;
+}
+
+/* ==================== Loading State ==================== */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    gap: 12px;
+}
+
+.loading-state p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.loading-state ::ng-deep .mat-mdc-progress-spinner circle {
+    stroke: var(--primary);
+}
+
+/* ==================== Notification Items ==================== */
+.notification-item {
+    margin-bottom: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    border-left: 4px solid transparent;
+}
+
+.notification-item:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Status-based Styling */
+.notification-item.unread {
+    border-left-color: #ff5252;
+    background: linear-gradient(to right, rgba(255, 82, 82, 0.05) 0%, white 10%);
+}
+
+.notification-item.seen {
+    border-left-color: #ffa726;
+    background: linear-gradient(to right, rgba(255, 167, 38, 0.05) 0%, white 10%);
+}
+
+.notification-item.read {
+    border-left-color: #66bb6a;
+    background: white;
+    opacity: 0.85;
+}
+
+/* ==================== Expansion Panel Header ==================== */
+.notification-item ::ng-deep .mat-expansion-panel-header {
+    padding: 16px 20px;
+    transition: background 0.3s ease;
+}
+
+.notification-item ::ng-deep .mat-expansion-panel-header:hover {
+    background: rgba(156, 165, 192, 0.08) !important;
+}
+
+.notification-item.unread ::ng-deep .mat-expansion-panel-header {
+    font-weight: 600;
+}
+
+/* ==================== Panel Title & Description ==================== */
+.notification-item ::ng-deep .mat-expansion-panel-header-title {
+    flex: 0 0 auto;
+    margin-right: 16px;
+}
+
+.notification-date {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #727479;
+    font-weight: 400;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-variant: small-caps;
+    font-variant-caps: small-caps;
+    font-variant-ligatures: common-ligatures;
+    white-space: nowrap;
+}
+
+.notification-item ::ng-deep .mat-expansion-panel-header-description {
+    flex: 1;
+    color: #1f2a37;
+    font-size: 15px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    justify-content: flex-start;
+}
+
+.notification-item.unread ::ng-deep .mat-expansion-panel-header-description {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+/* ==================== Notification Message ==================== */
+.notification-message {
+    margin: 0 0 10px 0;
+    padding: 0 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4b5563;
+}
+
+/* ==================== Action Row ==================== */
+.notification-item ::ng-deep mat-action-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px 16px;
+    border-top: 1px solid rgba(156, 165, 192, 0.15);
+}
+
+.action-btn {
+    background: linear-gradient(135deg, var(--primary), #d1d6e7);
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 0 16px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(156, 165, 192, 0.3);
+}
+
+.action-btn:hover {
+    box-shadow: 0 4px 12px rgba(156, 165, 192, 0.45);
+    transform: translateY(-1px);
+}
+
+.delete-btn {
+    display: flex;
+    background: transparent;
+    color: rgba(233, 15, 15, 0.425) !important;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 0 16px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+    color: rgb(233, 15, 15) !important;
+}
+
+/* ==================== Dialog Actions ==================== */
+.notification-dialog mat-dialog-actions {
+    padding: 16px 24px;
+    margin: 0;
+    background: white;
+    border-top: 1px solid rgba(156, 165, 192, 0.2);
+    border-radius: 0 0 14px 14px;
+    gap: 12px;
+}
+
+.close-btn {
+    color: #6b7280 !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.mark-read-btn {
+    background: linear-gradient(135deg, var(--primary), #d1d6e7);
+    color: white !important;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(156, 165, 192, 0.3);
+    transition: all 0.3s ease;
+}
+
+.mark-read-btn:hover {
+    box-shadow: 0 4px 12px rgba(156, 165, 192, 0.45);
+    transform: translateY(-1px);
+}
+
+/* ==================== Material Overrides ==================== */
+.notification-dialog ::ng-deep .mat-mdc-dialog-container {
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    padding: 0;
+}
+
+.notification-dialog ::ng-deep .mat-expansion-indicator::after {
+    color: var(--primary);
+}
+
+/* ==================== Responsive Design ==================== */
+@media (max-width: 600px) {
+    .notification-dialog h2[mat-dialog-title] {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .filter-field {
+        width: 100%;
+    }
+
+    .notification-item ::ng-deep .mat-expansion-panel-header {
+        padding: 12px 16px;
+    }
+
+    .notification-date {
+        font-size: 12px;
+    }
+
+    .notification-item ::ng-deep .mat-expansion-panel-header-description {
+        font-size: 14px;
+    }
+}
+
+/* ==================== Animations ==================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.notification-item {
+    animation: fadeIn 0.3s ease-out;
+}

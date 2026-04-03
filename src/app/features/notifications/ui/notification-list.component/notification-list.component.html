@@ -1,0 +1,74 @@
+<div class="notification-dialog">
+
+    <div class="notification-dialog-header">
+        <h2 class="notification-title">Notifications</h2>
+        <p class="notification-count">{{ notificationsCount() }}</p>
+        <section class="filter-section">
+            <h4 class="filter-label">Notification Filter</h4>
+            <mat-button-toggle-group class="filter-button" name="filter" aria-label="Filter"
+                [hideMultipleSelectionIndicator]="false" multiple>
+                <mat-button-toggle (click)="onFilterChange(NotificationStatus.All, allToggle.checked)" [checked]="true"
+                    #allToggle>All</mat-button-toggle>
+                <mat-button-toggle #unreadToggle
+                    (click)="onFilterChange(NotificationStatus.Unread, unreadToggle.checked)">Unread</mat-button-toggle>
+                <mat-button-toggle #seenToggle
+                    (click)="onFilterChange(NotificationStatus.Seen, seenToggle.checked)">Seen</mat-button-toggle>
+                <mat-button-toggle #readToggle
+                    (click)="onFilterChange(NotificationStatus.Read, readToggle.checked)">Read</mat-button-toggle>
+            </mat-button-toggle-group>
+        </section>
+
+    </div>
+
+    <mat-dialog-content class="mat-typography" (scroll)="onScroll($event)">
+        <div class="notification-container">
+            @if(filteredNotifications().length === 0 && !isLoadingMore()) {
+            <div class="empty-state">
+                <mat-icon>notifications_off</mat-icon>
+                <p>No notifications to display</p>
+            </div>
+            } @else {
+            <mat-accordion>
+                @for(notification of filteredNotifications(); track notification.id){
+                <mat-expansion-panel (opened)="changeNotificationStatus(notification)" class="notification-item"
+                    [class.unread]="notification.status === NotificationStatus.Unread"
+                    [class.seen]="notification.status === NotificationStatus.Seen"
+                    [class.read]="notification.status === NotificationStatus.Read">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title class="notification-date">
+                            <span>{{notification.createdAtUtc | date:'shortTime'}}</span>
+                            <span>{{notification.createdAtUtc | date:'shortDate'}}</span>
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            {{ notification.title }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <p class="notification-message">{{ notification.message }}</p>
+                    <mat-action-row>
+                        <button mat-icon-button (click)="deleteNotification(notification.id)"
+                            matTooltip="Delete notification" matTooltipPosition="right"
+                            class="delete-btn"><mat-icon>delete</mat-icon></button>
+                        <button mat-button (click)="notificationHandler(notification)" class="action-btn">View
+                            Details</button>
+                    </mat-action-row>
+                </mat-expansion-panel>
+                }
+            </mat-accordion>
+
+            @if(isLoadingMore()) {
+            <div class="loading-state">
+                <mat-spinner diameter="40"></mat-spinner>
+                <p>Loading more notifications...</p>
+            </div>
+            }
+            }
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close class="close-btn">Close</button>
+        <button mat-button (click)="markAllAsRead(getAllNotificationIds())" class="mark-read-btn">
+            Mark All as Read
+        </button>
+    </mat-dialog-actions>
+</div>

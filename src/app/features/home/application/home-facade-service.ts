@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HomeApiService } from '../data-access/home-api-service';
 import { HomeDataDTO } from '../models/response-dtos/home-data.dto';
-import { HomeSubscriptionRequestDTO } from '../models/response-dtos/home-subscription-request.dto';
-import { AddRoomDTO } from '../models/response-dtos/add-room.dto';
-import { DeleteRoomDTO } from '../models/response-dtos/delete-room.dto';
-import { UserDTO } from '../models/response-dtos/user.dto';
+import { HomeSubscriptionDTO } from '../models/response-dtos/home-subscription.dto';
+import { AccessLevel, AddRoomDTO } from '../models/request-dtos/add-room.dto';
+import { DeleteRoomDTO } from '../models/request-dtos/delete-room.dto';
+import { UserDTO } from '../models/request-dtos/user.dto';
 import { AddHomeDto } from '../models/request-dtos/add-home-dto';
+import { InvitationRequestDto } from '../models/request-dtos/invitation-request.dto';
+import { RenameHomeDto } from '../models/request-dtos/rename-home.dto';
+import { Observable } from 'rxjs';
+import { HomeInvitationDTO } from '../models/response-dtos/home-invitation.dto';
+import { HomeSubscriptionRequestDTO } from '../models/request-dtos/home-subscription.dto';
+import { HomeInvitationRequestDTO } from '../models/request-dtos/home-invitation.dto';
+import { SearchResultDTO } from '../models/response-dtos/home-card.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -13,144 +20,96 @@ import { AddHomeDto } from '../models/request-dtos/add-home-dto';
 export class HomeFacadeService {
   constructor(private homeApi: HomeApiService) { }
 
-  getHomeData(homeId: string): HomeDataDTO {
-    this.homeApi.getHomeData(homeId).subscribe({
-      next: (res: HomeDataDTO | null) => {
-        console.log('HomeFacadeService: getHomeData: result:', res);
-        if (res) {
-          return res;
-        } else {
-          console.log('HomeFacadeService: getHomeData: Empty home data');
-          return new HomeDataDTO();
-        }
-      },
-      error: (error) =>
-        console.log('HomeFacadeService: getHomeData: errors:', error),
-    });
-    return new HomeDataDTO();
+  //#region Home search methods
+  searchForHomes(searchTerm: string, page: number, pageSize: number, lon: number | null, lat: number | null): Observable<SearchResultDTO | null> {
+    return this.homeApi.searchForHomes(searchTerm, page, pageSize, lon, lat);
+  }
+  //#endregion
+
+  //#region Home data methods
+  getHomeData(homeId: string): Observable<HomeDataDTO | null> {
+    return this.homeApi.getHomeData(homeId);
+  }
+  //#endregion
+
+  //#region Home management methods
+  createNewHome(homeData: AddHomeDto): Observable<string> {
+    return this.homeApi.createNewHome(homeData);
   }
 
-  getHomeAllSubscriptionRequest(homeId: string): HomeSubscriptionRequestDTO[] {
-    this.homeApi.getHomeAllSubscriptionRequest(homeId).subscribe({
-      next: (res: HomeSubscriptionRequestDTO[] | null) => {
-        console.log(
-          'HomeFacadeService: getHomeAllSubscriptionRequest: result:',
-          res
-        );
-        if (res) {
-          return res;
-        } else {
-          console.log(
-            'HomeFacadeService: getHomeAllSubscriptionRequest: Empty home data'
-          );
-          return [];
-        }
-      },
-      error: (error) =>
-        console.log(
-          'HomeFacadeService: getHomeAllSubscriptionRequest: errors:',
-          error
-        ),
-    });
-    return [];
-  }
-
-  createNewHome(homeData: AddHomeDto): string {
-    const home: AddHomeDto = {
-      homeName: homeData.homeName,
-      homeInfo: homeData.homeInfo,
-      longitude: homeData.longitude,
-      latitude: homeData.latitude,
-      ISO3166_2_lvl4: homeData.ISO3166_2_lvl4,
-      country: homeData.country,
-      state: homeData.state,
-      address: homeData.address
+  renameHome(homeId: string, name: string): Observable<boolean> {
+    const home: RenameHomeDto = {
+      homeId: homeId,
+      newName: name
     };
-    this.homeApi.createNewHome(home).subscribe({
-      next: (res: string) => {
-        console.log('HomeFacadeService: createNewHome: result:', res);
-        if (res) {
-          return res;
-        } else {
-          console.log('HomeFacadeService: createNewHome: Empty home data');
-          return '';
-        }
-      },
-      error: (error) =>
-        console.log('HomeFacadeService: createNewHome: errors:', error),
-    });
-    return '';
+    return this.homeApi.RenameHome(home);
+  }
+  //#endregion
+
+  //#region Subscription Get methods
+  getHomePendingSubscriptionRequest(homeId: string): Observable<HomeSubscriptionDTO[] | null> {
+    return this.homeApi.getHomePendingSubscriptionRequest(homeId);
   }
 
-  addRoom(roomName: string, homeId: string): boolean {
-    const room: AddRoomDTO = { homeId: homeId, roomName: roomName };
-    this.homeApi.AddNewRoom(room).subscribe({
-      next: (res: boolean) => {
-        console.log('HomeFacadeService: addRoom: result:', res);
-        if (res) {
-          return res;
-        } else {
-          console.log('HomeFacadeService: addRoom: Empty home data');
-          return false;
-        }
-      },
-      error: (error) =>
-        console.log('HomeFacadeService: addRoom: errors:', error),
-    });
-    return false;
+  getHomeRejectedSubscriptionRequest(homeId: string): Observable<HomeSubscriptionDTO[] | null> {
+    return this.homeApi.getHomeRejectedSubscriptionRequest(homeId);
   }
 
-  DeleteRoom(roomId: string, homeId: string) {
+  getHomeAcceptedSubscriptionRequest(homeId: string): Observable<HomeSubscriptionDTO[] | null> {
+    return this.homeApi.getHomeAcceptedSubscriptionRequest(homeId);
+  }
+  //#endregion
+
+  //#region Invitation Get methods
+  getHomePendingInvitations(homeId: string): Observable<HomeInvitationDTO[] | null> {
+    return this.homeApi.getHomePendingInvitations(homeId);
+  }
+
+  getHomeRejectedInvitations(homeId: string): Observable<HomeInvitationDTO[] | null> {
+    return this.homeApi.getHomeRejectedInvitations(homeId);
+  }
+
+  getHomeAcceptedInvitations(homeId: string): Observable<HomeInvitationDTO[] | null> {
+    return this.homeApi.getHomeAcceptedInvitations(homeId);
+  }
+  //#endregion
+
+  //#region Room methods
+  addRoom(roomName: string, homeId: string, accessType: AccessLevel): Observable<string> {
+    const room: AddRoomDTO = { homeId: homeId, roomName: roomName, accessType: accessType };
+    return this.homeApi.AddNewRoom(room);
+  }
+
+  deleteRoom(roomId: string, homeId: string): Observable<boolean> {
     const room: DeleteRoomDTO = { homeId: homeId, roomId: roomId };
-    this.homeApi.DeleteRoom(room).subscribe({
-      next: (res: boolean) => {
-        console.log('HomeFacadeService: DeleteRoom: result:', res);
-        if (res) {
-          return res;
-        } else {
-          console.log('HomeFacadeService: DeleteRoom: Empty home data');
-          return false;
-        }
-      },
-      error: (error) =>
-        console.log('HomeFacadeService: DeleteRoom: errors:', error),
-    });
-    return false;
+    return this.homeApi.DeleteRoom(room);
+  }
+  //#endregion
+
+  //#region User methods
+  inviteUser(request: InvitationRequestDto): Observable<boolean> {
+    return this.homeApi.InviteNewUser(request);
   }
 
-  addUser(userId: string, homeId: string) {
-    const user: UserDTO = { userId: userId, homeId: homeId };
-    this.homeApi.AddNewUser(user).subscribe({
-      next: (res: boolean) => {
-        console.log('HomeFacadeService: addUser: result:', res);
-        if (res) {
-          return res;
-        } else {
-          console.log('HomeFacadeService: addUser: Empty home data');
-          return false;
-        }
-      },
-      error: (error) =>
-        console.log('HomeFacadeService: addUser: errors:', error),
-    });
-    return false;
+  deleteUser(homeId: string, userEmail: string): Observable<boolean> {
+    const user: UserDTO = { homeId: homeId, userEmail: userEmail };
+    return this.homeApi.DeleteUser(user);
+  }
+  //#endregion
+
+  //#region Subscription action methods
+  acceptSubscription(request: HomeSubscriptionRequestDTO): Observable<boolean> {
+    return this.homeApi.AcceptSubscriptionRequest(request);
   }
 
-  deleteUser(userId: string, homeId: string) {
-    const user: UserDTO = { userId: userId, homeId: homeId };
-    this.homeApi.DeleteUser(user).subscribe({
-      next: (res: boolean) => {
-        console.log('HomeFacadeService: DeleteUser: result:', res);
-        if (res) {
-          return res;
-        } else {
-          console.log('HomeFacadeService: DeleteUser: Empty home data');
-          return false;
-        }
-      },
-      error: (error) =>
-        console.log('HomeFacadeService: DeleteUser: errors:', error),
-    });
-    return false;
+  rejectSubscription(request: HomeSubscriptionRequestDTO): Observable<boolean> {
+    return this.homeApi.RejectSubscriptionRequest(request);
   }
+  //#endregion
+
+  //#region Invitation action methods
+  deleteInvitation(invitation: HomeInvitationRequestDTO): Observable<boolean> {
+    return this.homeApi.DeleteHomeInvitation(invitation);
+  }
+  //#endregion
 }

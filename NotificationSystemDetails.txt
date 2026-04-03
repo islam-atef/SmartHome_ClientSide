@@ -1,0 +1,121 @@
+# Notification System Documentation
+
+## Overview
+The Notification System is a multi-layered component designed to handle user alerts, invitations, system updates, and real-time push notifications. It follows Clean Architecture principles, separating domain logic, application orchestration, infrastructure persistence, and real-time delivery.
+
+## Key Features
+1.  **Persistence**: Notifications are stored in the SQL database with support for:
+    *   Titles and detailed messages.
+    *   Links to specific entities (Homes, Invitations, Devices, etc.) via `RefType` and `RefId`.
+    *   Status tracking (`Unread`, `Seen`, `Read`) with timestamps.
+2.  **Real-time Delivery**: Uses SignalR to push notifications and updated unread counts to connected users instantly.
+3.  **Management**:
+    *   Retrieval with pagination and status filtering.
+    *   Bulk marking as Read/Seen.
+    *   Bulk deletion (individual IDs or all read notifications).
+4.  **Automatic Prevention**: Unique indexing prevents duplicate notifications for the same event and user.
+
+## Component Details
+
+### 1. Domain Layer (`Domain\Entities\SqlEntities\NotificationEntities`)
+*   **Notification**: The core entity.
+    *   `Title`, `Message`, `UserId`, `HomeId`.
+    *   `Type`: Enum (`HomeInvitationCreated`, `HomeSubscriptionRequestAccepted`, `DeviceAlert`, etc.).
+    *   `Status`: Enum (`Unread`, `Seen`, `Read`).
+    *   `RefType` & `RefId`: Generic link to the source entity.
+*   **Methods**:
+    *   `Create(...)`: Static factory method.
+    *   `MarkAsRead()`: Transitions to `Read` status.
+    *   `MarkAsSeen()`: Transitions to `Seen` status.
+
+### 2. Application Layer (`Application\Notifications`)
+*   **INotificationService**: Interface defining all management operations.
+*   **NotificationService**: 
+    *   Coordinates database operations via `IUnitOfWork`.
+    *   Triggers real-time pushes via `INotificationRealtimePublisher`.
+    *   Handles validation and logging.
+*   **DTOs**:
+    *   `CreateNotificationDTO`: Input for creation.
+    *   `NotificationDTO`: Output for API responses.
+
+### 3. Infrastructure Layer (`Infrastructure\Persistence`)
+*   **NotificationRepository**: 
+    *   Optimized queries using `AsNoTracking` for reads.
+    *   Handles status transitions and bulk operations.
+*   **NotificationConfig**:
+    *   Configures database indices:
+        *   Index on `(UserId, Status, CreatedAt)` for fast unread count/list retrieval.
+        *   Index on `(UserId, CreatedAt)` for general listing.
+        *   Unique Index on `(UserId, RefType, RefId, Type)` to prevent duplicates.
+
+### 4. API Layer (`API\Hubs` & `API\Realtime`)
+*   **NotificationsHub (SignalR)**:
+    *   Groups connections by User ID (`user:{userId}`) for targeted delivery.
+*   **NotificationRealtimePublisher**:
+    *   Sends `NotificationReceived` and `UnreadCountUpdated` events to the client.
+*   **NotificationsController**:
+    *   Placeholder for API endpoints (CRUD operations).
+
+## API Endpoints (`API/Controllers/NotificationsController`)
+All endpoints require authentication (Bearer Token).
+
+### 1. Get My Notifications
+*   **URL**: `GET /api/Notifications/GetMyNotifications`
+*   **Query Params**:
+    *   `page` (int, default=1)
+    *   `pageSize` (int, default=10)
+    *   `notificationStatus` (NotificationStatus[]?, optional)
+*   **Response**: `200 OK` with list of `NotificationDTO`.
+
+### 2. Get Unread Count
+*   **URL**: `GET /api/Notifications/GetMyUnreadCount`
+*   **Response**: `200 OK` with integer count.
+
+### 3. Get Seen Count
+*   **URL**: `GET /api/Notifications/GetMySeenCount`
+*   **Response**: `200 OK` with integer count.
+
+### 4. Delete Specific Notifications
+*   **URL**: `DELETE /api/Notifications/DeleteNotifications`
+*   **Body**: `{ "notificationIds": ["string", "string"] }`
+*   **Response**: `200 OK` (bool).
+
+### 5. Delete All Read Notifications
+*   **URL**: `DELETE /api/Notifications/DeleteReadNotifications`
+*   **Response**: `200 OK` (bool).
+
+### 6. Mark Single Notification as Read
+*   **URL**: `POST /api/Notifications/MarkAsRead`
+*   **Body**: `{ "notificationId": "string" }`
+*   **Response**: `200 OK` (bool).
+
+### 7. Mark Single Notification as Seen
+*   **URL**: `POST /api/Notifications/MarkAsSeen`
+*   **Body**: `{ "notificationId": "string" }`
+*   **Response**: `200 OK` (bool).
+
+### 8. Mark Group as Read
+*   **URL**: `POST /api/Notifications/MarkAllAsRead`
+*   **Body**: `{ "notificationIds": ["string", "string"] }`
+*   **Response**: `200 OK` (bool).
+
+### 9. Mark Group as Seen
+*   **URL**: `POST /api/Notifications/MarkAllAsSeen`
+*   **Body**: `{ "notificationIds": ["string", "string"] }`
+*   **Response**: `200 OK` (bool).
+
+## Real-time Events (SignalR)
+**Hub URL**: `/hubs/notifications` (requires Auth)
+
+| Event Name | Data | Description |
+| :--- | :--- | :--- |
+| `NotificationReceived` | `NotificationPush` object | Sent when a new notification is created. |
+| `UnreadCountUpdated` | `int` | Sent when the unread count changes. |
+
+## Enums for Frontend
+*   **NotificationType**:
+    *   `HomeInvitationCreated = 1`, `HomeInvitationAccepted = 2`, `HomeInvitationRejected = 3`
+    *   `HomeSubscriptionRequestCreated = 11`, `HomeSubscriptionRequestAccepted = 12`, `HomeSubscriptionRequestRejected = 13`
+    *   `System = 21`, `DeviceAlert = 31`
+*   **NotificationStatus**: `Unread = 1`, `Seen = 2`, `Read = 3`
+*   **NotificationRefType**: `HomeInvitationEntity = 0`, `HomeSubscriptionRequestEntity = 1`, `System = 2`, `ControlUnitEntity = 3`

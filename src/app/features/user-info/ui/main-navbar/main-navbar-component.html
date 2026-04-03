@@ -7,7 +7,20 @@
 
   <div class="search">
     <mat-icon class="search-ic">search</mat-icon>
-    <input type="search" placeholder="Search homes..." class="search-input" />
+    <input type="search" #searchInput placeholder="Search homes..." class="search-input"
+      (keyup.enter)="search(searchInput.value)">
+
+    <button mat-icon-button (click)="search(searchInput.value)" class="search-btn">
+      <mat-icon>search</mat-icon>
+    </button>
+
+    <p><mat-slide-toggle class="search-options-toggle"
+        (change)="searchOption(searchLocallySliderNextValue())">@if(searchLocallySliderNextValue()){
+        My Homes }@else{Globally}</mat-slide-toggle></p>
+  </div>
+
+  <div class="notification">
+    <app-notification-bell></app-notification-bell>
   </div>
 
   <mat-menu #menu="matMenu">

@@ -25,12 +25,12 @@ export class TokenStoreService {
         typeof parsed.accessToken === 'string' ? parsed.accessToken : null;
       const refreshToken =
         typeof parsed.refreshToken === 'string' ? parsed.refreshToken : null;
-      let expiresAtUtc: Date | null = parsed.expiresAtUtc
-        ? new Date(parsed.expiresAtUtc)
+      let accessTokenExpiresAtUtc: Date | null = parsed.accessTokenExpiresAtUtc
+        ? new Date(parsed.accessTokenExpiresAtUtc)
         : null;
-      if (expiresAtUtc && isNaN(expiresAtUtc.getTime())) expiresAtUtc = null;
+      if (accessTokenExpiresAtUtc && isNaN(accessTokenExpiresAtUtc.getTime())) accessTokenExpiresAtUtc = null;
 
-      if (!accessToken || !refreshToken || !expiresAtUtc) {
+      if (!accessToken || !refreshToken || !accessTokenExpiresAtUtc) {
         this.clearTokens();
         return null;
       }
@@ -38,7 +38,7 @@ export class TokenStoreService {
       const model = new AuthTokenModel();
       model.accessToken = accessToken;
       model.refreshToken = refreshToken;
-      model.expiresAtUtc = expiresAtUtc;
+      model.accessTokenExpiresAtUtc = accessTokenExpiresAtUtc;
       // display the retrieved token
       console.log('TokenStore: getTokens: token result: ', model);
 
@@ -63,10 +63,10 @@ export class TokenStoreService {
     const payload = {
       accessToken: tokens.accessToken ?? null,
       refreshToken: tokens.refreshToken ?? null,
-      expiresAtUtc: tokens.expiresAtUtc
-        ? tokens.expiresAtUtc instanceof Date
-          ? tokens.expiresAtUtc.toISOString()
-          : tokens.expiresAtUtc
+      accessTokenExpiresAtUtc: tokens.accessTokenExpiresAtUtc
+        ? tokens.accessTokenExpiresAtUtc instanceof Date
+          ? tokens.accessTokenExpiresAtUtc.toISOString()
+          : tokens.accessTokenExpiresAtUtc
         : null,
     };
     try {

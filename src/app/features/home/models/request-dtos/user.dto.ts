@@ -1,4 +1,4 @@
 export class UserDTO {
   homeId: string = '';
-  userId: string = '';
+  userEmail: string = '';
 }
