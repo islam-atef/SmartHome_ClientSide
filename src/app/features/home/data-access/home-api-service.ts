@@ -113,7 +113,7 @@ export class HomeApiService {
     );
   }
 
-  AddNewUser(user: UserDTO): Observable<boolean> {
+    AcceptNewUser(user: UserDTO): Observable<boolean> {
     if (!user) return of(false);
     const url = 'HomeManagement/Add-NewUser';
     const body = {
